@@ -1,0 +1,13 @@
+#!/bin/bash
+
+output() {
+    local emotion="$1"
+
+    clear
+    echo ==========================
+    echo "  ,~."
+    echo " ($(python3 -c "from emote import gen_"$emotion"; print(gen_"$emotion"())"))"
+    echo "//-=-\\\\"
+    echo "(\_=_/)"
+    echo " ^^ ^^"
+}
