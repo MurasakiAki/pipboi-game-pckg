@@ -6,7 +6,7 @@ output() {
     clear
     echo ==========================
     echo "  ,~."
-    echo " ($(python3 -c "from emote import gen_"$emotion"; print(gen_"$emotion"())"))"
+    echo " ()"
     echo "//-=-\\\\"
     echo "(\_=_/)"
     echo " ^^ ^^"
@@ -18,7 +18,7 @@ select option in Game-Selection Quit;
 do
     case $option in
         Game-Selection)
-            echo hi
+            python3 /home/aki/Workplace/git/pipboi-game-pckg/tick-tack-toe.py
             ;;
         Quit)
             echo bye
