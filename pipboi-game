@@ -11,3 +11,20 @@ output() {
     echo "(\_=_/)"
     echo " ^^ ^^"
 }
+
+PS3="Enter a number: "
+
+select option in Game-Selection Quit;
+do
+    case $option in
+        Game-Selection)
+            echo hi
+            ;;
+        Quit)
+            echo bye
+            ;;
+        *)
+            echo idiot
+            ;;
+    esac
+done
