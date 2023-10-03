@@ -6,4 +6,6 @@ if [ -n "$pipboi_path" ]; then
     echo pipboi exists
     mv "$PWD" "$pipboi_path"
     echo Succesfully integrated pipboi-game-pckg into PIPBOI system
+else
+    echo PIPBOI not installed
 fi
