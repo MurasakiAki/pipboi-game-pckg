@@ -1,5 +1,6 @@
 import configparser
 import time
+import os
 
 def check_integration():
     config = configparser.ConfigParser()
@@ -13,6 +14,14 @@ def check_integration():
     else:
         return False
 
+def check_player(username):
+    return os.path.exists(f"{os.getcwd()}/wastelanders/.{username}")
 
-print(check_integration())
+def register(username, password):
+    pass
+
+def login(username, password):
+    pass
+
+print(check_player("aki"))
 time.sleep(10)

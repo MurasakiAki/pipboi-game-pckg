@@ -74,7 +74,7 @@ enable_input() {
     stty "$stty_settings"
 }
 
-PS3="Enter a number: "  # Store the original PS3 value
+PS3="Enter a number: "
 menu=true
 
 while $menu; do
