@@ -1,18 +1,35 @@
 import configparser
 import time
 import os
+import bcrypt
+
+def read_ini(file, section, var, type):
+    config = configparser.ConfigParser()
+    config.read(file)
+
+    if type == "s":
+        return config.get(section, var)
+    elif type == "i":
+        return config.getint(section, var)
+    else:
+        print("Wrong type")
 
 def check_integration():
-    config = configparser.ConfigParser()
 
-    config.read('.game-pckg-config.ini')
-
-    is_integrated_value = config.getint('Configuration', 'is_integrated')
+    is_integrated_value = read_ini(".game-pckg-config.ini", 'Configuration', 'is_integrated', "i")
 
     if is_integrated_value == 1:
         return True
     else:
         return False
+
+def hash_password(password):
+    salt = bcrypt.gensalt()
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
+    return hashed_password.decode('utf-8')
+
+def check_password(input_password, hashed_password):
+    return bcrypt.checkpw(input_password.encode('utf-8'), hashed_password.encode('utf-8'))
 
 def check_player(username):
     return os.path.exists(f"{os.getcwd()}/wastelanders/.{username}.ini")
@@ -23,22 +40,21 @@ def register(username, password):
     else:
         try:
             with open(f"{os.getcwd()}/wastelanders/.{username}.ini", 'x') as file:
-                file.write(f"[Data]\npassword={password}")
+                file.write(f"[Data]\npassword={hash_password(password)}")
         except:
             pass
         print("New player created.")
 
 def login(username, password):
     if check_player(username):
+        read_pass = read_ini(f"wastelanders/.{username}.ini", 'Data', 'password', "s")
 
-        player_config = configparser.ConfigParser()
-        player_config.read('.{username}.ini')
-
-        read_pass = player_config.getint('Data', 'password')
-
-        if read_pass == password:
+        if check_password(password, read_pass):
             print("login successful")
         else:
             print("invalid password")
-print(check_player("aki"))
+
+register("aki", "aki")
+login("aki", "aki")
+
 time.sleep(10)
