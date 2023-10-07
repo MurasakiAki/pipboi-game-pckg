@@ -2,6 +2,7 @@ import configparser
 import time
 import os
 import bcrypt
+import getpass
 
 def read_ini(file, section, var, type):
     config = configparser.ConfigParser()
@@ -51,10 +52,37 @@ def login(username, password):
 
         if check_password(password, read_pass):
             print("login successful")
+            return True
         else:
             print("invalid password")
+            return False
 
-register("aki", "aki")
-login("aki", "aki")
+while True:
+    print("Welcome to Wastelanders!")
+    time.sleep(5)
+    while True:
+        time.sleep(1)
+        os.system('clear')
+        choice = input("Do you want to [L]ogin or [r]egister?")
+        if choice in ["", "L", "l", "login", "log"]:
+            print("Please log in:")
+            usrnm = input("Username: ")
+            psswd = getpass.getpass("Password: ")
+            if login(usrnm, psswd):
+                break
+            else:
+                pass
+        elif choice in ["R", "r", "reg", "register"]:
+            print("Please register:")
+            usrnm = input("Username: ")
+            psswd = getpass.getpass("Password: ")
+            register(usrnm, psswd)
+            login(usrnm, psswd)
+            break
+        else:
+            print("Wrong choice")
+
+    
+    break
 
 time.sleep(10)
