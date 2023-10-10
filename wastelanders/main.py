@@ -58,12 +58,13 @@ def login(username, password):
             return False
 
 while True:
+    os.system('clear')
     print("Welcome to Wastelanders!")
     time.sleep(5)
     while True:
         time.sleep(1)
         os.system('clear')
-        choice = input("Do you want to [L]ogin or [r]egister?")
+        choice = input("Do you want to [L]ogin or [r]egister?\n")
         if choice in ["", "L", "l", "login", "log"]:
             print("Please log in:")
             usrnm = input("Username: ")
@@ -85,4 +86,34 @@ while True:
     
     break
 
-time.sleep(10)
+time.sleep(2)
+
+while True:
+    os.system('clear')
+    print("=======================")
+    print("|                     |")
+    print("|1) PLAY              |")
+    print("|2) OPTIONS           |")
+    print("|3) QUIT              |")
+    print("|                     |")
+    print("=======================")
+    try:
+        go_to = int(input("What do you want to do?\n"))
+    except ValueError:
+        pass
+
+    if go_to == 1:
+        os.system('clear')
+        print("game start")
+        break
+    elif go_to == 2:
+        print("there should be options")
+    elif go_to == 3:
+        print("=======================")
+        print("|                     |")
+        print("|                     |")
+        print("|       Bye bye       |")
+        print("|                     |")
+        print("|                     |")
+        print("=======================")
+        break
