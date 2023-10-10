@@ -15,8 +15,20 @@ def read_ini(file, section, var, type):
     else:
         print("Wrong type")
 
-def check_integration():
+def write_ini(file, section, var, input):
+    config = configparser.ConfigParser()
+    config.read(file)
 
+    if section not in config:
+        config[section] = {}
+
+    config[section][var] = str(input)
+
+    with open(file, 'w') as configfile:
+        config.write(configfile)
+
+
+def check_integration():
     is_integrated_value = read_ini(".game-pckg-config.ini", 'Configuration', 'is_integrated', "i")
 
     if is_integrated_value == 1:
@@ -105,6 +117,7 @@ while True:
     if go_to == 1:
         os.system('clear')
         print("game start")
+        write_ini('wastelanders/.aki.ini','Stats','race','mlok')
         break
     elif go_to == 2:
         print("there should be options")
