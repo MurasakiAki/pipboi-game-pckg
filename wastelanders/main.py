@@ -53,7 +53,7 @@ def register(username, password):
     else:
         try:
             with open(f"{os.getcwd()}/wastelanders/.{username}.ini", 'x') as file:
-                file.write(f"[Data]\npassword={hash_password(password)}")
+                file.write(f"[Data]\npassword={hash_password(password)}\n[Stats]\nrace = \nclass = \nexp = \nlevel = \nhealth = \nstamina = \nstr = \ndex = \nper = \nagi = \nspot_dist = \n[INV]\nmoney = \nmass = \nbackpack = \nhead = \nchest = \nlegs = \nleft_hand = \nright_hand = ")
         except:
             pass
         print("New player created.")
@@ -95,7 +95,6 @@ while True:
         else:
             print("Wrong choice")
 
-    
     break
 
 time.sleep(2)

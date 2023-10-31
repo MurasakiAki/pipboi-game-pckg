@@ -48,4 +48,5 @@ def create_character(usrnm, rc, clss):
     elif clss == "psycho":
         fill_clss_stats(usrnm, 100, 5, bckpck, None, None, None, None, "W_M_Machette_6-12_60_15_200_2_T")
 
-create_character('aki', 'loli', 'sniper')
+def init_world(type):
+    pass
