@@ -1,30 +1,31 @@
 from main import read_ini, write_ini
 
+PLAYER_FILE_DIR = "wastelanders/characters/"
+
 def fill_rc_stats(usrnm, hp, stmn, str, dex, per, agi, spt_dst):
-    write_ini(f'wastelanders/.{usrnm}.ini','Stats', 'health', hp)
-    write_ini(f'wastelanders/.{usrnm}.ini','Stats', 'stamina', stmn)
-    write_ini(f'wastelanders/.{usrnm}.ini','Stats', 'STR', str)
-    write_ini(f'wastelanders/.{usrnm}.ini','Stats', 'DEX', dex)
-    write_ini(f'wastelanders/.{usrnm}.ini','Stats', 'PER', per)
-    write_ini(f'wastelanders/.{usrnm}.ini','Stats', 'AGI', agi)
-    write_ini(f'wastelanders/.{usrnm}.ini','Stats', 'spot_dist', spt_dst)
+    write_ini(f'{PLAYER_FILE_DIR}.{usrnm}.ini','Stats', 'health', hp)
+    write_ini(f'{PLAYER_FILE_DIR}.{usrnm}.ini','Stats', 'stamina', stmn)
+    write_ini(f'{PLAYER_FILE_DIR}.{usrnm}.ini','Stats', 'STR', str) # increases large weapons, health
+    write_ini(f'{PLAYER_FILE_DIR}.{usrnm}.ini','Stats', 'DEX', dex) # increases small weapons
+    write_ini(f'{PLAYER_FILE_DIR}.{usrnm}.ini','Stats', 'PER', per) # increases guns
+    write_ini(f'{PLAYER_FILE_DIR}.{usrnm}.ini','Stats', 'AGI', agi) # determines successful evade, number of actions per turn(stamina)
 
 def fill_clss_stats(usrnm, mn, mss, bckpck, hd, chst, lgs, lft_hnd, rght_hnd):
-    write_ini(f'wastelanders/.{usrnm}.ini','INV', 'money', mn)
-    write_ini(f'wastelanders/.{usrnm}.ini','INV', 'mass', mss)
-    write_ini(f'wastelanders/.{usrnm}.ini','INV', 'backpack', bckpck)
-    write_ini(f'wastelanders/.{usrnm}.ini','INV', 'head', hd)
-    write_ini(f'wastelanders/.{usrnm}.ini','INV', 'chest', chst)
-    write_ini(f'wastelanders/.{usrnm}.ini','INV', 'legs', lgs)
-    write_ini(f'wastelanders/.{usrnm}.ini','INV', 'left_hand', lft_hnd)
-    write_ini(f'wastelanders/.{usrnm}.ini','INV', 'right_hand', rght_hnd)
+    write_ini(f'{PLAYER_FILE_DIR}.{usrnm}.ini','INV', 'money', mn)
+    write_ini(f'{PLAYER_FILE_DIR}.{usrnm}.ini','INV', 'mass', mss)
+    write_ini(f'{PLAYER_FILE_DIR}.{usrnm}.ini','INV', 'backpack', bckpck)
+    write_ini(f'{PLAYER_FILE_DIR}.{usrnm}.ini','INV', 'head', hd)
+    write_ini(f'{PLAYER_FILE_DIR}.{usrnm}.ini','INV', 'chest', chst)
+    write_ini(f'{PLAYER_FILE_DIR}.{usrnm}.ini','INV', 'legs', lgs)
+    write_ini(f'{PLAYER_FILE_DIR}.{usrnm}.ini','INV', 'left_hand', lft_hnd)
+    write_ini(f'{PLAYER_FILE_DIR}.{usrnm}.ini','INV', 'right_hand', rght_hnd)
 
 def create_character(usrnm, rc, clss):
     # Base Stats
-    write_ini(f'wastelanders/.{usrnm}.ini','Stats', 'race', rc)
-    write_ini(f'wastelanders/.{usrnm}.ini','Stats', 'class', clss)
-    write_ini(f'wastelanders/.{usrnm}.ini','Stats', 'exp', 0)
-    write_ini(f'wastelanders/.{usrnm}.ini','Stats', 'level', 1)
+    write_ini(f'{PLAYER_FILE_DIR}.{usrnm}.ini','Stats', 'race', rc)
+    write_ini(f'{PLAYER_FILE_DIR}.{usrnm}.ini','Stats', 'class', clss)
+    write_ini(f'{PLAYER_FILE_DIR}.{usrnm}.ini','Stats', 'exp', 0)
+    write_ini(f'{PLAYER_FILE_DIR}.{usrnm}.ini','Stats', 'level', 0)
 
     # Clss/RC based stats
     if rc == "human":

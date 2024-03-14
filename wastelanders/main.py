@@ -4,6 +4,8 @@ import os
 import bcrypt
 import getpass
 
+LOGGED_IN_USR = ""
+
 def read_ini(file, section, var, type):
     config = configparser.ConfigParser()
     config.read(file)
@@ -45,22 +47,23 @@ def check_password(input_password, hashed_password):
     return bcrypt.checkpw(input_password.encode('utf-8'), hashed_password.encode('utf-8'))
 
 def check_player(username):
-    return os.path.exists(f"{os.getcwd()}/wastelanders/.{username}.ini")
+    return os.path.exists(f"{os.getcwd()}/wastelanders/characters/.{username}.ini")
 
 def register(username, password):
     if check_player(username):
         print("Player already exists")
     else:
         try:
-            with open(f"{os.getcwd()}/wastelanders/.{username}.ini", 'x') as file:
-                file.write(f"[Data]\npassword={hash_password(password)}\n[Stats]\nrace = \nclass = \nexp = \nlevel = \nhealth = \nstamina = \nstr = \ndex = \nper = \nagi = \nspot_dist = \n[INV]\nmoney = \nmass = \nbackpack = \nhead = \nchest = \nlegs = \nleft_hand = \nright_hand = ")
+            with open(f"{os.getcwd()}/wastelanders/characters/.{username}.ini", 'x') as file:
+                file.write(f"[Data]\npassword={hash_password(password)}\n[Stats]\nrace = \nclass = \nexp = \nlevel = \nhealth = \nstamina = \nstr = \ndex = \nper = \nagi = \n[INV]\nmoney = \nbackpack = \nweapon = ")
         except:
             pass
+        LOGGED_IN_USR = username
         print("New player created.")
 
 def login(username, password):
     if check_player(username):
-        read_pass = read_ini(f"wastelanders/.{username}.ini", 'Data', 'password', "s")
+        read_pass = read_ini(f"wastelanders/characters/.{username}.ini", 'Data', 'password', "s")
 
         if check_password(password, read_pass):
             print("login successful")
@@ -82,6 +85,7 @@ while True:
             usrnm = input("Username: ")
             psswd = getpass.getpass("Password: ")
             if login(usrnm, psswd):
+                LOGGED_IN_USR = usrnm
                 break
             else:
                 pass
@@ -116,7 +120,6 @@ while True:
     if go_to == 1:
         os.system('clear')
         print("game start")
-        write_ini('wastelanders/.aki.ini','Stats','race','mlok')
         break
     elif go_to == 2:
         print("there should be options")
