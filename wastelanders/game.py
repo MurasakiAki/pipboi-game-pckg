@@ -2,7 +2,7 @@ from main import read_ini, write_ini
 
 PLAYER_FILE_DIR = "wastelanders/characters/"
 
-def fill_rc_stats(usrnm, hp, stmn, str, dex, per, agi, spt_dst):
+def fill_rc_stats(usrnm, hp, stmn, str, dex, per, agi):
     write_ini(f'{PLAYER_FILE_DIR}.{usrnm}.ini','Stats', 'health', hp)
     write_ini(f'{PLAYER_FILE_DIR}.{usrnm}.ini','Stats', 'stamina', stmn)
     write_ini(f'{PLAYER_FILE_DIR}.{usrnm}.ini','Stats', 'STR', str) # increases large weapons, health
@@ -10,15 +10,9 @@ def fill_rc_stats(usrnm, hp, stmn, str, dex, per, agi, spt_dst):
     write_ini(f'{PLAYER_FILE_DIR}.{usrnm}.ini','Stats', 'PER', per) # increases guns
     write_ini(f'{PLAYER_FILE_DIR}.{usrnm}.ini','Stats', 'AGI', agi) # determines successful evade, number of actions per turn(stamina)
 
-def fill_clss_stats(usrnm, mn, mss, bckpck, hd, chst, lgs, lft_hnd, rght_hnd):
+def fill_clss_stats(usrnm, mn, bckpck):
     write_ini(f'{PLAYER_FILE_DIR}.{usrnm}.ini','INV', 'money', mn)
-    write_ini(f'{PLAYER_FILE_DIR}.{usrnm}.ini','INV', 'mass', mss)
     write_ini(f'{PLAYER_FILE_DIR}.{usrnm}.ini','INV', 'backpack', bckpck)
-    write_ini(f'{PLAYER_FILE_DIR}.{usrnm}.ini','INV', 'head', hd)
-    write_ini(f'{PLAYER_FILE_DIR}.{usrnm}.ini','INV', 'chest', chst)
-    write_ini(f'{PLAYER_FILE_DIR}.{usrnm}.ini','INV', 'legs', lgs)
-    write_ini(f'{PLAYER_FILE_DIR}.{usrnm}.ini','INV', 'left_hand', lft_hnd)
-    write_ini(f'{PLAYER_FILE_DIR}.{usrnm}.ini','INV', 'right_hand', rght_hnd)
 
 def create_character(usrnm, rc, clss):
     # Base Stats
@@ -37,17 +31,17 @@ def create_character(usrnm, rc, clss):
     elif rc == "skeli":
         fill_rc_stats(usrnm, 150, 80, 8, 1, 8, 1, 50)
 
-    bckpck = "I_C_Syringe_50-60_25_6_150_0_F"
+    bckpck = ""
     if clss == "soldier":
-        fill_clss_stats(usrnm, 100, 20, bckpck, None, "A_CH_OldVest_6-10_15_100_50_5_T", None, "W_M_Dagger_1-6_80_10_200_1_T", "W_G_M9_2-6_5_100_50_1_T")
+        fill_clss_stats(usrnm, 100, f"{bckpck}|W_M_L_BroadSword_(12-16)_(1)")
     elif clss == "gunner":
-        fill_clss_stats(usrnm, 100, 20, bckpck, None, "A_CH_Vest_10-12_15_100_100_6_T", None, "W_G_HK419_2-6_5_100_50_5_T", "W_G_HK419_2-6_5_100_50_5_T")
+        fill_clss_stats(usrnm, 80, bckpck)
     elif clss == "sniper":
-        fill_clss_stats(usrnm, 100, 10, f"{bckpck}|I_T_SmokeBomb_1-2_0_5_200_0_F", None, "A_CH_LightVest_5-8_10_100_45_3_T", None, "W_G_L96_10-20_50_1000_250_8_T", "W_G_L96_10-20_50_1000_250_8_T")
+        fill_clss_stats(usrnm, 50, f"{bckpck}|I_T_SmokeBomb_1-2_0_5_200_0_F")
     elif clss == "chemist":
-        fill_clss_stats(usrnm, 100, 10, "I_C_Syringe_50-60_25_10_150_0_F", None, "A_CH_LightVest_5-8_10_100_45_3_T", None, "I_T_H2SO4InABottle_10-12_25_25_50_0_T", "W_G_M9_2-6_5_100_50_1_T")
+        fill_clss_stats(usrnm, 10, backpack)
     elif clss == "psycho":
-        fill_clss_stats(usrnm, 100, 5, bckpck, None, None, None, None, "W_M_Machette_6-12_60_15_200_2_T")
+        fill_clss_stats(usrnm, 0, bckpck)
 
 def init_world(type):
     pass
