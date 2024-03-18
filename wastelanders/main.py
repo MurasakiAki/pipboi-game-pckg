@@ -6,38 +6,6 @@ import getpass
 
 LOGGED_IN_USR = ""
 
-def read_ini(file, section, var, type):
-    config = configparser.ConfigParser()
-    config.read(file)
-
-    if type == "s":
-        return config.get(section, var)
-    elif type == "i":
-        return config.getint(section, var)
-    else:
-        print("Wrong type")
-
-def write_ini(file, section, var, input):
-    config = configparser.ConfigParser()
-    config.read(file)
-
-    if section not in config:
-        config[section] = {}
-
-    config[section][var] = str(input)
-
-    with open(file, 'w') as configfile:
-        config.write(configfile)
-
-
-def check_integration():
-    is_integrated_value = read_ini(".game-pckg-config.ini", 'Configuration', 'is_integrated', "i")
-
-    if is_integrated_value == 1:
-        return True
-    else:
-        return False
-
 def hash_password(password):
     salt = bcrypt.gensalt()
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
@@ -55,7 +23,7 @@ def register(username, password):
     else:
         try:
             with open(f"{os.getcwd()}/wastelanders/characters/.{username}.ini", 'x') as file:
-                file.write(f"[Data]\npassword={hash_password(password)}\n[Stats]\nrace = \nclass = \nexp = \nlevel = \nhealth = \nstamina = \nstr = \ndex = \nper = \nagi = \n[INV]\nmoney = \nbackpack = \nweapon = ")
+                file.write(f"[Data]\npassword = {hash_password(password)}\nhi-score = 0")
         except:
             pass
         LOGGED_IN_USR = username
