@@ -1,0 +1,35 @@
+# Class named "item" for RPG items
+
+# properties
+item_properties=()
+
+# properties IDs
+name=0
+description=1
+
+item.property() {
+    if [ "$2" == "=" ]
+    then
+        item_properties[$1]=$3
+    else
+        echo ${item_properties[$1]}
+    fi
+}
+
+item.name() {
+    if [ "$1" == "=" ]
+    then
+        item.property name = "$2"
+    else
+        item.property name
+    fi
+}
+
+item.description() {
+    if [ "$1" == "=" ]
+    then
+        item.property description = "$2"
+    else
+        item.property description
+    fi
+}
