@@ -50,17 +50,22 @@ function echo_menu() {
 }
 
 function echo_info_menu() {
+    lines=($@)
+    clear_lines="                              "
+    clear
     echo -e "/============================================\\"
-    echo -e "| ${CYAN}INFO MENU${NONE}                                  |"
-    echo -e "| 1) ${RED}ENEMY${NONE}                                |"
-    echo -e "| 2) SYR                                     |"
-    echo -e "| 3) SMB                                           |"
-    echo -e "| 4) MLT                                           |"
-    echo -e "| 5) DEFEND                                           |"
-    echo -e "| 6) RUN                                           |"
-    echo -e "|                                            |"
-    echo -e "|                                            |"
-    echo -e "|                                            |"
-    echo -e "|                                            |"
+    line="${lines[0]}"
+    echo $line
+    echo -e "| ${CYAN}INFO MENU${NONE}  | '${lines[0]}${clear_lines::-${#line}}|'"
+    echo -e "| 1) ${RED}ENEMY${NONE}   |                               |"
+    echo -e "| 2) ${BRED}SYR${NONE}     |                               |"
+    echo -e "| 3) ${GRAY}SMB${NONE}     |                               |"
+    echo -e "| 4) ${ORANGE}MLT${NONE}     |                               |"
+    echo -e "| 5) ${BLUE}DEFEND${NONE}  |                               |"
+    echo -e "| 6) ${YELLOW}RUN${NONE}     |                               |"
+    echo -e "|            |                               |"
+    echo -e "|            |                               |"
+    echo -e "| 7) ${GRAY}BACK${NONE}    |                               |"
+    echo -e "| 8) ${BRED}QUIT${NONE}    |                               |"
     echo -e "\============================================/"
 }
