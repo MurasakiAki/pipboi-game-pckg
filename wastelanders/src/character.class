@@ -7,7 +7,9 @@ character_properties=()
 name=0
 max_health=1
 current_health=2
-damage=3
+max_stamina=3
+current_stamina=4
+damage=5
 
 character.property() {
     if [ "$2" == "=" ]
@@ -45,6 +47,24 @@ character.current_health() {
     fi
 }
 
+character.max_stamina() {
+    if [ "$1" == "=" ]
+    then
+        character.property max_stamina = "$2"
+    else
+        character.property max_stamina
+    fi
+}
+
+character.current_stamina() {
+    if [ "$1" == "=" ]
+    then
+        character.property current_stamina = "$2"
+    else
+        character.property current_stamina
+    fi
+}
+
 character.damage() {
     if [ "$1" == "=" ]
     then
@@ -56,11 +76,13 @@ character.damage() {
 
 # name max_hp damage
 character.init() {
-    if [ "$#" == "3" ]; then
+    if [ "$#" == "4" ]; then
         character.name = "$1"
         character.max_health = $2
         character.current_health = $(character.max_health)
-        character.damage = "$3"
+        character.max_stamina = "$3"
+        character.current_stamina = $(character.max_stamina)
+        character.damage = "$4"
     else
         echo "Not enough arguments were given in character.init function."
         exit 0

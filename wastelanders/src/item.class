@@ -6,6 +6,7 @@ item_properties=()
 # properties IDs
 name=0
 description=1
+quantity=2
 
 item.property() {
     if [ "$2" == "=" ]
@@ -32,4 +33,30 @@ item.description() {
     else
         item.property description
     fi
+}
+
+item.quantity() {
+    if [ "$1" == "=" ]
+    then
+        item.property quantity = "$2"
+    else
+        item.property quantity
+    fi
+}
+
+item.init() {
+    if [ "$#" == "3" ]; then
+        item.name = "$1"
+        item.description = "$2"
+        item.quantity = "$3"
+    else
+        echo "Not enough arguments were given in item.init function."
+        exit 0
+    fi
+}
+
+item.echo() {
+    echo "Item $(item.name) | Quantity: $(item.quantity)" 
+    echo "Description:"
+    echo "$(item.description)"
 }
