@@ -25,13 +25,13 @@ item weapon
 weapon.init "Hacksaw" 6 15 #description = stm per use, quantity = damage
 
 item syringe
-syringe.init "Syringe" "Will heal you for 25% of your max health, uses 5 stamina." 5
+syringe.init "Syringe" 5 5
 
 item smoke_bomb
-smoke_bomb.init "Smoke Bomb" "Decreases stamina of your enemy for 3 turns, uses 6 stamina." 2
+smoke_bomb.init "Smoke Bomb" 6 2
 
 item molotov
-molotov.init "Molotov" "Hurts enemy for 10% of your damage for 3 turns at the begining of each turn, uses 4 stamina." 6
+molotov.init "Molotov" 4 6
 
 character player
 player.init "aki" 100 10 $(weapon.quantity)
@@ -64,42 +64,19 @@ until [ "$(player.current_health)" -le 0 ]; do
                 message="What do you want to know?"
                 read -p "Your choice: " choice
                 case "$choice" in
-                    1) echo_info_menu ${RED}ENEMY${NONE} ;;
-                    2) echo_info_menu
-                        echo "###############"
-                        echo -e ${BRED}SYR${NONE}
-                        echo $(syringe.name)
-                        echo "By using this item, you'll inject yourself with syringe"
-                        echo $(syringe.description)
-                        echo "###############" ;;
-                    3) echo_info_menu
-                        echo "###############"
-                        echo -e ${GRAY}SMB${NONE}
-                        echo $(smoke_bomb.name)
-                        echo "By using this item, you'll thow a smoke bomb at your enemy"
-                        echo $(smoke_bomb.description)
-                        echo "###############" ;;
-                    4) echo_info_menu
-                        echo "###############"
-                        echo -e ${ORANGE}MLT${NONE}
-                        echo $(molotov.name)
-                        echo "By using this item, you'll thow a molotov coctail at your enemy"
-                        echo $(molotov.description)
-                        echo "###############" ;;
-                    5) echo_info_menu
-                        echo "###############"
-                        echo -e ${BLUE}DEFEND${NONE}
-                        echo "The ability to defend yourself is based on your STR."
-                        echo "The damage taken in next turn will be decreased by each point of STR you have + 25% of your weapons damage."
-                        echo "This ability uses 50% of your max stamina."
-                        echo "###############" ;;
-                    6) echo_info_menu
-                        echo "###############"
-                        echo -e ${YELLOW}RUN${NONE}
-                        echo "Running away is a valid tactic."
-                        echo "You will try to run away from the fight, your chance of escaping is based on your AGI"
-                        echo "If you succesfully escape, you will end the game. If you won't, there will be consequences."
-                        echo "###############" ;;
+                    1) echo_info_menu "ENEMY" 
+                        
+                        ;;
+                    2) lines=("SYR" "$(syringe.name)" "By using this item, you'll" "inject yourself with syringe." "" "Will heal you for 25% of your" "max health, uses 5 stamina.")
+                        echo_info_menu "${lines[@]}" ;;
+                    3) lines=("SMB" "$(smoke_bomb.name)" "By using this item, you'll" "thow a smoke bomb" "at your enemy." "" "Decreases stamina of your" "enemy for 3 turns," "uses 6 stamina.")
+                        echo_info_menu "${lines[@]}" ;;
+                    4) lines=("MLT" "$(molotov.name)" "By using this item, you'll" "thow a molotov coctail at your" "enemy." "" "Hurts enemy for 10% of your" "damage for 3 turns at the" "begining of each turn," "uses 4 stamina." )
+                        echo_info_menu "${lines[@]}" ;;
+                    5) lines=("DEFEND" "The ability to defend yourself" "is based on your STR." "" "The damage taken in next turn" "will be decreased by each" "point of STR you have + 25% of" "your weapons damage." "" "This ability uses 50% of" "your max stamina.")
+                        echo_info_menu "${lines[@]}" ;;
+                    6) lines=("RUN" "Running away is a valid tactic" "" "You will try to run away" "from the fight, your chance" "of escaping is based on" "your AGI." "If you succesfully escape," "you will end the game." "If you won't," "there will be consequences.")
+                        echo_info_menu "${lines[@]}" ;;
                     7) echo_menu
                         break ;;
                     8) exit 0 ;;

@@ -5,7 +5,7 @@ item_properties=()
 
 # properties IDs
 name=0
-description=1
+stm_per_use=1
 quantity=2
 
 item.property() {
@@ -26,12 +26,12 @@ item.name() {
     fi
 }
 
-item.description() {
+item.stm_per_use() {
     if [ "$1" == "=" ]
     then
-        item.property description = "$2"
+        item.property stm_per_use = "$2"
     else
-        item.property description
+        item.property stm_per_use
     fi
 }
 
@@ -47,7 +47,7 @@ item.quantity() {
 item.init() {
     if [ "$#" == "3" ]; then
         item.name = "$1"
-        item.description = "$2"
+        item.stm_per_use = "$2"
         item.quantity = "$3"
     else
         echo "Not enough arguments were given in item.init function."
@@ -56,7 +56,5 @@ item.init() {
 }
 
 item.echo() {
-    echo "Item $(item.name) | Quantity: $(item.quantity)" 
-    echo "Description:"
-    echo "$(item.description)"
+    echo "Item $(item.name) | Quantity: $(item.quantity) | STM per use: $(item.description)" 
 }

@@ -12,6 +12,35 @@ GRAY='\033[1;30m'
 CYAN='\033[0;36m'
 NONE='\033[0m'
 
+split_string() {
+    local str="$1"
+    local max_length=30
+    local current_chunk=""
+    local words=()
+    local split_parts=()
+
+    IFS=' ' read -ra words <<< "$str"
+
+    for word in "${words[@]}"; do
+        if (( ${#current_chunk} + ${#word} <= max_length )); then
+            if [ -z "$current_chunk" ]; then
+                current_chunk="$word"
+            else
+                current_chunk+=" $word"
+            fi
+        else
+            split_parts+=("$current_chunk")
+            current_chunk="$word"
+        fi
+    done
+
+    if [ -n "$current_chunk" ]; then
+        split_parts+=("$current_chunk")
+    fi
+
+    echo "${split_parts[@]}"
+}
+
 function echo_menu() {
     player_name=$(player.name)
     player_chealth=$(player.current_health)
@@ -50,22 +79,20 @@ function echo_menu() {
 }
 
 function echo_info_menu() {
-    lines=($@)
+    lines=("$@")
     clear_lines="                              "
     clear
     echo -e "/============================================\\"
-    line="${lines[0]}"
-    echo $line
-    echo -e "| ${CYAN}INFO MENU${NONE}  | '${lines[0]}${clear_lines::-${#line}}|'"
-    echo -e "| 1) ${RED}ENEMY${NONE}   |                               |"
-    echo -e "| 2) ${BRED}SYR${NONE}     |                               |"
-    echo -e "| 3) ${GRAY}SMB${NONE}     |                               |"
-    echo -e "| 4) ${ORANGE}MLT${NONE}     |                               |"
-    echo -e "| 5) ${BLUE}DEFEND${NONE}  |                               |"
-    echo -e "| 6) ${YELLOW}RUN${NONE}     |                               |"
-    echo -e "|            |                               |"
-    echo -e "|            |                               |"
-    echo -e "| 7) ${GRAY}BACK${NONE}    |                               |"
-    echo -e "| 8) ${BRED}QUIT${NONE}    |                               |"
+    echo -e "| ${CYAN}INFO MENU${NONE}  | ${GRAY}${lines[0]}$(if [ "${lines[0]}" == "" ]; then printf "%s" "$clear_lines"; else echo "${clear_lines::-${#lines[0]}}"; fi)${NONE}|"
+    echo -e "| 1) ${RED}ENEMY${NONE}   | ${lines[1]}$(if [ "${lines[1]}" == "" ]; then printf "%s" "$clear_lines"; else echo "${clear_lines::-${#lines[1]}}"; fi)|"
+    echo -e "| 2) ${BRED}SYR${NONE}     | ${lines[2]}$(if [ "${lines[2]}" == "" ]; then printf "%s" "$clear_lines"; else echo "${clear_lines::-${#lines[2]}}"; fi)|"
+    echo -e "| 3) ${GRAY}SMB${NONE}     | ${lines[3]}$(if [ "${lines[3]}" == "" ]; then printf "%s" "$clear_lines"; else echo "${clear_lines::-${#lines[3]}}"; fi)|"
+    echo -e "| 4) ${ORANGE}MLT${NONE}     | ${lines[4]}$(if [ "${lines[4]}" == "" ]; then printf "%s" "$clear_lines"; else echo "${clear_lines::-${#lines[4]}}"; fi)|"
+    echo -e "| 5) ${BLUE}DEFEND${NONE}  | ${lines[5]}$(if [ "${lines[5]}" == "" ]; then printf "%s" "$clear_lines"; else echo "${clear_lines::-${#lines[5]}}"; fi)|"
+    echo -e "| 6) ${YELLOW}RUN${NONE}     | ${lines[6]}$(if [ "${lines[6]}" == "" ]; then printf "%s" "$clear_lines"; else echo "${clear_lines::-${#lines[6]}}"; fi)|"
+    echo -e "|            | ${lines[7]}$(if [ "${lines[7]}" == "" ]; then printf "%s" "$clear_lines"; else echo "${clear_lines::-${#lines[7]}}"; fi)|"
+    echo -e "|            | ${lines[8]}$(if [ "${lines[8]}" == "" ]; then printf "%s" "$clear_lines"; else echo "${clear_lines::-${#lines[8]}}"; fi)|"
+    echo -e "| 7) ${GRAY}BACK${NONE}    | ${lines[9]}$(if [ "${lines[9]}" == "" ]; then printf "%s" "$clear_lines"; else echo "${clear_lines::-${#lines[9]}}"; fi)|"
+    echo -e "| 8) ${BRED}QUIT${NONE}    | ${lines[10]}$(if [ "${lines[10]}" == "" ]; then printf "%s" "$clear_lines"; else echo "${clear_lines::-${#lines[10]}}"; fi)|"
     echo -e "\============================================/"
 }
