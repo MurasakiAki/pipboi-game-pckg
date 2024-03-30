@@ -12,43 +12,28 @@ GRAY='\033[1;30m'
 CYAN='\033[0;36m'
 NONE='\033[0m'
 
-split_string() {
-    local str="$1"
-    local max_length=30
-    local current_chunk=""
-    local words=()
-    local split_parts=()
+generate_name_line() {
+    local name="$1"
+    local name_length="${#name}"
+    local name_line="| $name"
+    local padding=$((33 - name_length))
 
-    IFS=' ' read -ra words <<< "$str"
-
-    for word in "${words[@]}"; do
-        if (( ${#current_chunk} + ${#word} <= max_length )); then
-            if [ -z "$current_chunk" ]; then
-                current_chunk="$word"
-            else
-                current_chunk+=" $word"
-            fi
-        else
-            split_parts+=("$current_chunk")
-            current_chunk="$word"
-        fi
-    done
-
-    if [ -n "$current_chunk" ]; then
-        split_parts+=("$current_chunk")
-    fi
-
-    echo "${split_parts[@]}"
+    name_line+="$(printf "%${padding}s")"
+    
+    echo "$name_line"
 }
 
 function echo_menu() {
     player_name=$(player.name)
     player_chealth=$(player.current_health)
     player_cstamina=$(player.current_stamina)
-    player_name_len=${#player_name}
-    player_name_line="| $player_name                                 "
-    player_name_line="${player_name_line:0:$((${#player_name_line} - $player_name_len))}"
+    player_name_line="$(generate_name_line "$player_name")"
     
+    enemy_name=$(enemy.name)
+    enemy_chealth=$(enemy.current_health)
+    enemy_cstamina=$(enemy.current_stamina)
+    enemy_name_line="$(generate_name_line "$enemy_name")"
+
     health_space="                       "
     if [ ${#player_chealth} -eq 2 ]; then
         health_space="$health_space "
@@ -58,20 +43,20 @@ function echo_menu() {
 
     stamina_space="                        "
     if [ ${#player_cstamina} -eq 1 ]; then
-        health_space="$health_space "
+        stamina_space="$stamina_space "
     fi
 
     clear
     echo -e "/============================================\\"
-    echo -e "|                                            |"
-    echo -e "|                                            |"
-    echo -e "|                                            |"
-    echo -e "|                                            |"
-    echo -e "|                                            |"
+    echo -e "$enemy_name_line""|         |"
+    echo -e "| $enemy_chealth/$(enemy.max_health)                            |         |"
+    echo -e "|                                  |         |"
+    echo -e "|                                  |         |"
+    echo -e "|                                  |         |"
     echo -e "|--------------------------------------------|"
     echo -e "$player_name_line""|  ${BBLUE}ITEMS${NONE}  |"
-    echo -e "| HP:${BRED}$(player.current_health)/$(player.max_health)${NONE}$health_space| ${BRED}SYR${NONE} "$(syringe.quantity)"/9 |"
-    echo -e "| STM:${BGREEN}$(player.current_stamina)/$(player.max_stamina)${NONE}                        | ${GRAY}SMB${NONE} "$(smoke_bomb.quantity)"/9 |"
+    echo -e "| HP:${BRED}$(player.current_health)/$(player.max_health)${NONE}""$health_space""| ${BRED}SYR${NONE} "$(syringe.quantity)"/9 |"
+    echo -e "| STM:${BGREEN}$(player.current_stamina)/$(player.max_stamina)${NONE}""$stamina_space""| ${GRAY}SMB${NONE} "$(smoke_bomb.quantity)"/9 |"
     echo -e "| 1) ${RED}ATTACK${NONE}   3) ${BLUE}DEFEND${NONE}   5) ${GRAY}USE${NONE}   | ${ORANGE}MLT${NONE} "$(molotov.quantity)"/9 |"
     echo -e "| 2) ${BRED}HEAL${NONE}     4) ${YELLOW}RUN${NONE}      6) ${CYAN}INFO${NONE}  |         |"
     echo -e "\============================================/"

@@ -19,10 +19,11 @@ CYAN='\033[0;36m'
 NONE='\033[0m'
 
 LEVEL=1
+TURN=1
 
 # item weapon is special item
 item weapon
-weapon.init "Hacksaw" 6 15 #description = stm per use, quantity = damage
+weapon.init "Hacksaw" 6 15  #quantity = damage
 
 item syringe
 syringe.init "Syringe" 5 5
@@ -39,23 +40,34 @@ player.init "aki" 100 10 $(weapon.quantity)
 character enemy
 enemy.init "zombie" 20 10 5
 
-message="What will you do?"
-echo_menu
+message="What will you do?                  ${YELLOW}E) End Turn${NONE}"
+echo_menu $(player) $(enemy)
 until [ "$(player.current_health)" -le 0 ]; do
     echo -e "$message"
-    message="What will you do?"
+    message="What will you do?                  ${YELLOW}E) End Turn${NONE}"
     read -p "Your action: " action
 
     case "$action" in
-        1) echo_menu
-            echo 1 ;;
-        2) echo_menu
+        1)
+            if [ $(weapon.stm_per_use) -le $(player.current_stamina) ]; then
+                player.current_stamina = $(($(player.current_stamina) - $(weapon.stm_per_use)))
+                damage=$(player.damage)
+                enemy_health=$(enemy.current_health)
+                enemy.current_health = "$((enemy_health - damage))"
+                echo_menu $(player) $(enemy)
+            else
+                message="${GREEN}Not enough stamina!${NONE}"
+                echo_menu $(player) $(enemy)
+            fi
+            
+            ;;
+        2) echo_menu $(player) $(enemy)
             echo 2 ;;
-        3) echo_menu
+        3) echo_menu $(player) $(enemy)
             echo 3 ;;
-        4) echo_menu
+        4) echo_menu $(player) $(enemy)
             echo 4 ;;
-        5) echo_menu
+        5) echo_menu $(player) $(enemy)
             echo 5 ;;
         6) echo_info_menu
             message="What do you want to know?"
@@ -77,14 +89,14 @@ until [ "$(player.current_health)" -le 0 ]; do
                         echo_info_menu "${lines[@]}" ;;
                     6) lines=("RUN" "Running away is a valid tactic" "" "You will try to run away" "from the fight, your chance" "of escaping is based on" "your AGI." "If you succesfully escape," "you will end the game." "If you won't," "there will be consequences.")
                         echo_info_menu "${lines[@]}" ;;
-                    7) echo_menu
+                    7) echo_menu $(player) $(enemy)
                         break ;;
                     8) exit 0 ;;
                    *) echo_info_menu
                         message="${BRED}Invalid choice${NONE}" ;;
                 esac
             done ;;
-        *) echo_menu
+        *) echo_menu $(player) $(enemy)
             message="${BRED}Invalid action${NONE}" ;;
     esac
 done

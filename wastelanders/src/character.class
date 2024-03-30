@@ -74,7 +74,7 @@ character.damage() {
     fi
 }
 
-# name max_hp damage
+# name max_hp max_stm damage
 character.init() {
     if [ "$#" == "4" ]; then
         character.name = "$1"
