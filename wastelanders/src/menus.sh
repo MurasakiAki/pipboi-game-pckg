@@ -73,7 +73,7 @@ function echo_menu() {
     str_per_spaces="        "
     dex_agi_spaces="     "
 
-    clear
+    #clear
     echo -e "/============================================\\"
     echo -e "$enemy_name_line""|         |"
     echo -e "| HP:${BRED}$(enemy.current_health)/$(enemy.max_health)${NONE}""$e_health_space""STR:$enemy_str""${str_per_spaces::-${#enemy_str}}""DEX:$enemy_dex""${dex_agi_spaces::-${#enemy_dex}}""|         |"
@@ -93,7 +93,7 @@ function echo_menu() {
 function echo_info_menu() {
     lines=("$@")
     clear_lines="                              "
-    clear
+    #clear
     echo -e "/============================================\\"
     echo -e "| ${CYAN}INFO MENU${NONE}  | ${GRAY}${lines[0]}$(if [ "${lines[0]}" == "" ]; then printf "%s" "$clear_lines"; else echo "${clear_lines::-${#lines[0]}}"; fi)${NONE}|"
     echo -e "| 1) ${RED}ENEMY${NONE}   | ${lines[1]}$(if [ "${lines[1]}" == "" ]; then printf "%s" "$clear_lines"; else echo "${clear_lines::-${#lines[1]}}"; fi)|"
@@ -110,7 +110,7 @@ function echo_info_menu() {
 }
 
 function echo_players_turn() {
-    clear
+    #clear
     echo -e "/============================================\\"
     echo -e "|                                            |"
     echo -e "|                                            |"
@@ -128,7 +128,7 @@ function echo_players_turn() {
 }
 
 function echo_enemy_turn() {
-    clear
+    #clear
     echo -e "/============================================\\"
     echo -e "|                                            |"
     echo -e "|                                            |"

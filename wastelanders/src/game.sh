@@ -37,21 +37,23 @@ item molotov
 molotov.init "Molotov" 4 6
 
 character player
-player.init "aki" 100 10 $(weapon.quantity)
+player.init "aki" 100 10 "$(weapon.quantity)"
 player.STR = 2
 player.PER = 6
 player.DEX = 0
 player.AGI = 15
+player.is_defending = 0
 
 item enemy_weapon
 enemy_weapon.init "Attack" 5 5
 
 character enemy
-enemy.init "zombie" 200 10 $(enemy_weapon.quantity)
+enemy.init "zombie" 20 10 "$(enemy_weapon.quantity)"
 enemy.STR = 2
 enemy.PER = 0
 enemy.DEX = 3
 enemy.AGI = 10
+enemy.is_defending = 0
 
 function who_is_faster() {
     player_agi=$(player.AGI)
@@ -78,14 +80,29 @@ function player_turn() {
 
         case "$action" in
             1)
-                if [ $(weapon.stm_per_use) -le $(player.current_stamina) ]; then
-                    player_stm=$(player.current_stamina)
+                echo "$(enemy.damage)"
+                if [ "$(weapon.stm_per_use)" -le "$(player.current_stamina)" ]; then
                     weapon_stm=$(weapon.stm_per_use)
+                    player_stm=$(player.current_stamina)
                     player.current_stamina = $((player_stm - weapon_stm))
-                    damage=$(player.damage)
+                    damage="$(player.damage)"
                     enemy_health=$(enemy.current_health)
-                    enemy.current_health = $((enemy_health - damage))
-                    echo_menu 
+                    final_damage=$damage
+                    if [ "$(enemy.is_defending)" -eq "1" ]; then
+                        enemy_str=$(enemy.STR)
+                        enemy_dmg=$(enemy.damage)
+                        enemy_w_bonus=$(calculate_percentage "$enemy_dmg" 25)
+                        enemy.damage = "$enemy_dmg"
+                        echo "enemy.damage: ""$(enemy.damage)"
+                        echo "enemy_w_bonus: $enemy_w_bonus"
+                        e_defend_bonus=$((enemy_str + enemy_w_bonus))
+                        final_damage=$((final_damage - e_defend_bonus))
+                    fi
+                    enemy_hp=$((enemy_health - final_damage))
+                    enemy.current_health = $enemy_hp
+                    echo_menu
+                    echo "Final damage: $final_damage"
+                    player.damage = $damage
                 else
                     message="${GREEN}Not enough stamina!${NONE}"
                     echo_menu 
@@ -152,6 +169,9 @@ function enemy_turn() {
         echo "enemy will ""$(decide_action)"
         execute_action
         sleep 2
+        if [ "$(enemy.is_defending)" -eq "1" ]; then
+            break
+        fi
     done
 }
 
