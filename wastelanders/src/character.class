@@ -10,6 +10,11 @@ current_health=2
 max_stamina=3
 current_stamina=4
 damage=5
+STR=6
+PER=7
+DEX=8
+AGI=9
+
 
 character.property() {
     if [ "$2" == "=" ]
@@ -71,6 +76,42 @@ character.damage() {
         character.property damage = "$2"
     else
         character.property damage
+    fi
+}
+
+character.STR() {
+    if [ "$1" == "=" ]
+    then
+        character.property STR = "$2"
+    else
+        character.property STR
+    fi
+}
+
+character.PER() {
+    if [ "$1" == "=" ]
+    then
+        character.property PER = "$2"
+    else
+        character.property PER
+    fi
+}
+
+character.DEX() {
+    if [ "$1" == "=" ]
+    then
+        character.property DEX = "$2"
+    else
+        character.property DEX
+    fi
+}
+
+character.AGI() {
+    if [ "$1" == "=" ]
+    then
+        character.property AGI = "$2"
+    else
+        character.property AGI
     fi
 }
 

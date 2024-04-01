@@ -5,6 +5,7 @@
 . item.h
 
 source menus.sh
+source enemy_logic.sh
 
 RED='\033[0;31m'
 BRED='\033[1;31m'
@@ -20,10 +21,11 @@ NONE='\033[0m'
 
 LEVEL=1
 TURN=1
+WHOSE_TURN=""
 
 # item weapon is special item
 item weapon
-weapon.init "Hacksaw" 6 15  #quantity = damage
+weapon.init "Hacksaw" 6 19  #quantity = damage
 
 item syringe
 syringe.init "Syringe" 5 5
@@ -36,13 +38,38 @@ molotov.init "Molotov" 4 6
 
 character player
 player.init "aki" 100 10 $(weapon.quantity)
+player.STR = 2
+player.PER = 6
+player.DEX = 0
+player.AGI = 15
+
+item enemy_weapon
+enemy_weapon.init "Attack" 5 5
 
 character enemy
-enemy.init "zombie" 20 10 5
-until [ "$(player.current_health)" -le 0 ]; do
+enemy.init "zombie" 200 10 $(enemy_weapon.quantity)
+enemy.STR = 2
+enemy.PER = 0
+enemy.DEX = 3
+enemy.AGI = 10
+
+function who_is_faster() {
+    player_agi=$(player.AGI)
+    enemy_agi=$(enemy.AGI)
+
+    if [ "$player_agi" -ge "$enemy_agi" ]; then
+        echo "player"
+    else
+        echo "enemy"
+    fi
+}
+
+function player_turn() {
+    echo_players_turn
+    player.current_stamina = $(player.max_stamina)
     message="What will you do?                  7) ${YELLOW}End Turn${NONE}"
     echo_menu
-    echo "$TURN"
+    echo "$WHOSE_TURN"
     action=""
     until [ "$action" == "7" ]; do
         echo -e "$message"
@@ -114,4 +141,31 @@ until [ "$(player.current_health)" -le 0 ]; do
                 ;;
         esac
     done
-done
+}
+
+function enemy_turn() {
+    echo_enemy_turn
+    enemy.current_stamina = $(enemy.max_stamina)
+    until [ "$(enemy.current_stamina)" -le "0" ]; do
+        echo_menu
+        echo -e "${RED}ENEMY TURN${NONE}"
+        echo "enemy will ""$(decide_action)"
+        execute_action
+        sleep 2
+    done
+}
+
+function start_game() {
+    until [ "$(player.current_health)" -le 0 ]; do
+        whose_turn=$(who_is_faster)
+        if [ "$whose_turn" == "enemy" ]; then
+            enemy_turn
+            player_turn
+        else
+            player_turn
+            enemy_turn
+        fi
+    done
+}
+
+start_game
