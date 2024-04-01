@@ -80,7 +80,6 @@ function player_turn() {
 
         case "$action" in
             1)
-                echo "$(enemy.damage)"
                 if [ "$(weapon.stm_per_use)" -le "$(player.current_stamina)" ]; then
                     weapon_stm=$(weapon.stm_per_use)
                     player_stm=$(player.current_stamina)
@@ -90,11 +89,9 @@ function player_turn() {
                     final_damage=$damage
                     if [ "$(enemy.is_defending)" -eq "1" ]; then
                         enemy_str=$(enemy.STR)
-                        enemy_dmg=$(enemy.damage)
+                        enemy_dmg=$(enemy_weapon.quantity)
                         enemy_w_bonus=$(calculate_percentage "$enemy_dmg" 25)
-                        enemy.damage = "$enemy_dmg"
-                        echo "enemy.damage: ""$(enemy.damage)"
-                        echo "enemy_w_bonus: $enemy_w_bonus"
+                        enemy_weapon.quantity = $enemy_dmg
                         e_defend_bonus=$((enemy_str + enemy_w_bonus))
                         final_damage=$((final_damage - e_defend_bonus))
                     fi
