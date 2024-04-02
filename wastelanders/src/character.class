@@ -9,12 +9,11 @@ max_health=1
 current_health=2
 max_stamina=3
 current_stamina=4
-damage=5
-STR=6
-PER=7
-DEX=8
-AGI=9
-is_defending=10
+STR=5
+PER=6
+DEX=7
+AGI=8
+is_defending=9
 
 
 character.property() {
@@ -71,15 +70,6 @@ character.current_stamina() {
     fi
 }
 
-character.damage() {
-    if [ "$1" == "=" ]
-    then
-        character.property damage = "$2"
-    else
-        character.property damage
-    fi
-}
-
 character.STR() {
     if [ "$1" == "=" ]
     then
@@ -125,21 +115,22 @@ character.is_defending() {
     fi
 }
 
-# name max_hp max_stm damage
+# name max_hp max_stm
 character.init() {
-    if [ "$#" == "4" ]; then
+    if [ "$#" == "3" ]
+    then
         character.name = "$1"
-        character.max_health = $2
-        character.current_health = $(character.max_health)
+        character.max_health = "$2"
+        character.current_health = "$(character.max_health)"
         character.max_stamina = "$3"
-        character.current_stamina = $(character.max_stamina)
-        character.damage = "$4"
+        character.current_stamina = "$(character.max_stamina)"
+
     else
-        echo "Not enough arguments were given in character.init function."
+        echo "Not enough/too many arguments were given in character.init function."
         exit 0
     fi
 }
 
 character.echo() {
-    echo "Character $(character.name) has $(character.current_health)/$(character.max_health) HP and deals $(character.damage) DMG."
+    echo "Character $(character.name) has $(character.current_health)/$(character.max_health) HP, $(character.current_stamina)/$(character.max_stamina) STM"
 }

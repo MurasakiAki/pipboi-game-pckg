@@ -37,10 +37,9 @@ function attack() {
     player_chp=$(player.current_health)
     enemy_cstm=$(enemy.current_stamina)
     eweapon_stm=$(enemy_weapon.stm_per_use)
-    damage=$(enemy.damage)
+    damage=$(enemy_weapon.quantity)
     enemy.current_stamina = $((enemy_cstm - eweapon_stm))
     player.current_health = $((player_chp - damage))
-    enemy.damage = $damage
 }
 
 function defend() {

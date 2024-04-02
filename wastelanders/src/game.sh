@@ -25,7 +25,7 @@ WHOSE_TURN=""
 
 # item weapon is special item
 item weapon
-weapon.init "Hacksaw" 6 19  #quantity = damage
+weapon.init "Hacksaw" 6 10 #quantity = damage
 
 item syringe
 syringe.init "Syringe" 5 5
@@ -37,7 +37,7 @@ item molotov
 molotov.init "Molotov" 4 6
 
 character player
-player.init "aki" 100 10 "$(weapon.quantity)"
+player.init "aki" 100 13
 player.STR = 2
 player.PER = 6
 player.DEX = 0
@@ -48,12 +48,22 @@ item enemy_weapon
 enemy_weapon.init "Attack" 5 5
 
 character enemy
-enemy.init "zombie" 20 10 "$(enemy_weapon.quantity)"
+enemy.init "zombie" 20 10
 enemy.STR = 2
 enemy.PER = 0
 enemy.DEX = 3
 enemy.AGI = 10
 enemy.is_defending = 0
+
+function change_enemy() {
+    enemy_weapon.init "Attack" 8 10
+    enemy.init "goblin" 30 8
+    enemy.STR = 20
+    enemy.PER = 10
+    enemy.DEX = 8
+    enemy.AGI = 20
+    enemy.is_defending = 0
+}
 
 function who_is_faster() {
     player_agi=$(player.AGI)
@@ -67,11 +77,13 @@ function who_is_faster() {
 }
 
 function player_turn() {
+    player.echo
+    enemy.echo
+    sleep 5
     echo_players_turn
     player.current_stamina = $(player.max_stamina)
     message="What will you do?                  7) ${YELLOW}End Turn${NONE}"
     echo_menu
-    echo "$WHOSE_TURN"
     action=""
     until [ "$action" == "7" ]; do
         echo -e "$message"
@@ -84,7 +96,7 @@ function player_turn() {
                     weapon_stm=$(weapon.stm_per_use)
                     player_stm=$(player.current_stamina)
                     player.current_stamina = $((player_stm - weapon_stm))
-                    damage="$(player.damage)"
+                    damage="$(weapon.quantity)"
                     enemy_health=$(enemy.current_health)
                     final_damage=$damage
                     if [ "$(enemy.is_defending)" -eq "1" ]; then
@@ -98,8 +110,6 @@ function player_turn() {
                     enemy_hp=$((enemy_health - final_damage))
                     enemy.current_health = $enemy_hp
                     echo_menu
-                    echo "Final damage: $final_damage"
-                    player.damage = $damage
                 else
                     message="${GREEN}Not enough stamina!${NONE}"
                     echo_menu 
