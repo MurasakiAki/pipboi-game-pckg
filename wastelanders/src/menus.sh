@@ -67,7 +67,7 @@ function echo_menu() {
     if [ ${#enemy_cstamina} -eq 3 ]; then
         e_stamina_space="${e_stamina_space::-2}"
     elif [ ${#enemy_cstamina} -eq 1 ]; then
-        e_stamina_space="$e_stamina_space "
+        e_stamina_space="$e_stamina_space  "
     fi
 
     str_per_spaces="        "
@@ -75,13 +75,13 @@ function echo_menu() {
 
     clear
     echo -e "/============================================\\"
-    echo -e "$enemy_name_line""|         |"
+    echo -e "$(if [ "$(enemy.is_defending)" -eq "1" ]; then echo "${BLUE}$enemy_name_line${NONE}"; else echo "$enemy_name_line"; fi)""|         |"
     echo -e "| HP:${BRED}$(enemy.current_health)/$(enemy.max_health)${NONE}""$e_health_space""STR:$enemy_str""${str_per_spaces::-${#enemy_str}}""DEX:$enemy_dex""${dex_agi_spaces::-${#enemy_dex}}""|         |"
     echo -e "| STM:${BGREEN}$(enemy.current_stamina)/$(enemy.max_stamina)${NONE}""$e_stamina_space""PER:$enemy_per""${str_per_spaces::-${#enemy_per}}""AGI:$enemy_agi""${dex_agi_spaces::-${#enemy_agi}}""|         |"
     echo -e "|                                  |         |"
     echo -e "|                                  |         |"
     echo -e "|--------------------------------------------|"
-    echo -e "$player_name_line""|  ${BBLUE}ITEMS${NONE}  |"
+    echo -e "$(if [ "$(player.is_defending)" -eq "1" ]; then echo "${BLUE}$player_name_line${NONE}"; else echo "$player_name_line"; fi)""|  ${BBLUE}ITEMS${NONE}  |"
     echo -e "| HP:${BRED}$(player.current_health)/$(player.max_health)${NONE}""$p_health_space""STR:$player_str""${str_per_spaces::-${#player_str}}""DEX:$player_dex""${dex_agi_spaces::-${#player_dex}}""| ${BRED}SYR${NONE} "$(syringe.quantity)"/9 |"
     echo -e "| STM:${BGREEN}$(player.current_stamina)/$(player.max_stamina)${NONE}""$p_stamina_space""PER:$player_per""${str_per_spaces::-${#player_per}}""AGI:$player_agi""${dex_agi_spaces::-${#player_agi}}""| ${GRAY}SMB${NONE} "$(smoke_bomb.quantity)"/9 |"
     echo -e "| 1) ${RED}ATTACK${NONE}   3) ${BLUE}DEFEND${NONE}   5) ${GRAY}USE${NONE}   | ${ORANGE}MLT${NONE} "$(molotov.quantity)"/9 |"
@@ -117,14 +117,14 @@ function echo_players_turn() {
     echo -e "|                                            |"
     echo -e "|                                            |"
     echo -e "|                                            |"
-    echo -e "|                PLAYERS TURN                |"
+    echo -e "|                ${BGREEN}PLAYERS TURN${NONE}                |"
     echo -e "|                                            |"
     echo -e "|                                            |"
     echo -e "|                                            |"
     echo -e "|                                            |"
     echo -e "|                                            |"
     echo -e "\============================================/"
-    sleep 1
+    sleep 2
 }
 
 function echo_enemy_turn() {
@@ -135,12 +135,30 @@ function echo_enemy_turn() {
     echo -e "|                                            |"
     echo -e "|                                            |"
     echo -e "|                                            |"
-    echo -e "|                 ENEMY TURN                 |"
+    echo -e "|                 ${RED}ENEMY TURN${NONE}                 |"
     echo -e "|                                            |"
     echo -e "|                                            |"
     echo -e "|                                            |"
     echo -e "|                                            |"
     echo -e "|                                            |"
     echo -e "\============================================/"
-    sleep 1
+    sleep 2
+}
+
+function echo_enemy_defeated() {
+    clear
+    echo -e "/============================================\\"
+    echo -e "|                                            |"
+    echo -e "|                                            |"
+    echo -e "|                                            |"
+    echo -e "|                                            |"
+    echo -e "|                                            |"
+    echo -e "|               ${BRED}ENEMY DEFEATED${NONE}               |"
+    echo -e "|                                            |"
+    echo -e "|                                            |"
+    echo -e "|                                            |"
+    echo -e "|                                            |"
+    echo -e "|                                            |"
+    echo -e "\============================================/"
+    sleep 2
 }

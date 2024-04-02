@@ -25,7 +25,7 @@ WHOSE_TURN=""
 
 # item weapon is special item
 item weapon
-weapon.init "Hacksaw" 6 10 #quantity = damage
+weapon.init "Hacksaw" 2 10 #quantity = damage
 
 item syringe
 syringe.init "Syringe" 5 5
@@ -77,10 +77,8 @@ function who_is_faster() {
 }
 
 function player_turn() {
-    player.echo
-    enemy.echo
-    sleep 5
     echo_players_turn
+    player.is_defending = "0"
     player.current_stamina = $(player.max_stamina)
     message="What will you do?                  7) ${YELLOW}End Turn${NONE}"
     echo_menu
@@ -108,16 +106,31 @@ function player_turn() {
                         final_damage=$((final_damage - e_defend_bonus))
                     fi
                     enemy_hp=$((enemy_health - final_damage))
+                    if [ "$enemy_hp" -lt "0" ]; then
+                        enemy_hp="0"
+                    fi
                     enemy.current_health = $enemy_hp
                     echo_menu
                 else
-                    message="${GREEN}Not enough stamina!${NONE}"
+                    message="${GREEN}Not enough stamina!${NONE}                7) ${YELLOW}End Turn${NONE}"
                     echo_menu 
                 fi 
                 ;;
             2) echo_menu 
                 ;;
-            3) echo_menu 
+            3)  
+                player_max_stm=$(player.max_stamina)
+                defend_cost=$((player_max_stm / 2))
+                if [ "$defend_cost" -le "$(player.current_stamina)" ]; then
+                    player.is_defending = "1"
+                    player_stm=$(player.current_stamina)
+                    player.current_stamina = $((player_stm - defend_cost))
+                    message="player is defending"
+                    echo_menu
+                else
+                    message="${GREEN}Not enough stamina!${NONE}                7) ${YELLOW}End Turn${NONE}"
+                    echo_menu 
+                fi
                 ;;
             4) echo_menu 
                 ;;
@@ -153,7 +166,7 @@ function player_turn() {
                         8) exit 0 
                             ;;
                         *) echo_info_menu
-                            message="${BRED}Invalid choice${NONE}"
+                            message="${BRED}Invalid choice${NONE}                     7) ${YELLOW}End Turn${NONE}"
                             ;;
                     esac
                 done 
@@ -161,7 +174,7 @@ function player_turn() {
             7) TURN=$((TURN + 1))
                 ;;
             *) echo_menu
-                message="${BRED}Invalid action${NONE}" 
+                message="${BRED}Invalid action${NONE}                     7) ${YELLOW}End Turn${NONE}" 
                 ;;
         esac
     done
@@ -169,6 +182,7 @@ function player_turn() {
 
 function enemy_turn() {
     echo_enemy_turn
+    enemy.is_defending = "0"
     enemy.current_stamina = $(enemy.max_stamina)
     until [ "$(enemy.current_stamina)" -le "0" ]; do
         echo_menu
@@ -187,12 +201,21 @@ function start_game() {
         whose_turn=$(who_is_faster)
         if [ "$whose_turn" == "enemy" ]; then
             enemy_turn
-            player_turn
+            if [ "$(enemy.current_health)" -le 0 ]; then
+                echo_enemy_defeated
+                change_enemy
+            else
+                player_turn
+            fi
         else
             player_turn
-            enemy_turn
+            if [ "$(enemy.current_health)" -le 0 ]; then
+                echo_enemy_defeated
+                change_enemy
+            else
+                enemy_turn
+            fi
         fi
     done
 }
-
 start_game

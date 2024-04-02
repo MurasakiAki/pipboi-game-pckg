@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. character.h
+
 # Define the number of random characters you want to generate
 num_characters=10
 
@@ -14,4 +16,13 @@ function randomize() {
     done
 }
 
-randomize
+
+character char
+char.damage = 1
+char.name = "A"
+char.max_health = 12
+
+echo "$(char.max_health)"
+damage="$(char.max_health)"
+echo "$damage"
+echo "$(char.max_health)"

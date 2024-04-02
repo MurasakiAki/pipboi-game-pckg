@@ -34,12 +34,25 @@ function execute_action() {
 }
 
 function attack() {
-    player_chp=$(player.current_health)
-    enemy_cstm=$(enemy.current_stamina)
     eweapon_stm=$(enemy_weapon.stm_per_use)
-    damage=$(enemy_weapon.quantity)
+    enemy_cstm=$(enemy.current_stamina)
     enemy.current_stamina = $((enemy_cstm - eweapon_stm))
-    player.current_health = $((player_chp - damage))
+    damage=$(enemy_weapon.quantity)
+    player_hp=$(player.current_health)
+    final_e_damage=$damage
+    if [ "$(player.is_defending)" -eq "1" ]; then
+        player_str=$(player.STR)
+        player_dmg=$(weapon.quantity)
+        player_w_bonus=$(calculate_percentage "$player_dmg" 25)
+        weapon.quantity = $player_dmg
+        p_defend_bonus=$((player_str + player_w_bonus))
+        final_e_damage=$((final_e_damage - p_defend_bonus))
+    fi
+    player_hp=$((player_hp - final_e_damage))
+    if [ "$player_hp" -lt "0" ]; then
+        player_hp="0"
+    fi
+    player.current_health = $player_hp
 }
 
 function defend() {
