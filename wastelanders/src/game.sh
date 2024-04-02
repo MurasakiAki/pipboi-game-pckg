@@ -116,7 +116,36 @@ function player_turn() {
                     echo_menu 
                 fi 
                 ;;
-            2) echo_menu 
+            2)  
+                player_stm=$(player.current_stamina)
+                syr_qnt=$(syringe.quantity)
+                heal_cost=4
+                if [ "$player_stm" -ge "$heal_cost" ]; then
+                    if [ "$syr_qnt" -gt "0" ]; then
+                        player_max_hp=$(player.max_health)
+                        health_to_add=$(calculate_percentage $player_max_hp 25)
+                        player_chealth=$(player.current_health)
+                        final_health=$((player_chealth + health_to_add))
+                        if [ "$final_health" -lt "$player_max_hp" ]; then
+                            player.current_stamina = $((player_stm - heal_cost))
+                            syringe.quantity = $((syr_qnt - 1))
+                            player.current_health = $final_health
+                            message="${BRED}You feel relieved${NONE}                 7) ${YELLOW}End Turn${NONE}"
+                            echo_menu
+                        else
+                            player.current_health = $(player.max_health)
+                            message="${BRED}You have full health${NONE}               7) ${YELLOW}End Turn${NONE}"
+                            echo_menu
+                        fi
+                    else 
+                        message="${BRED}Not enough syringes${NONE}                7) ${YELLOW}End Turn${NONE}"
+                        echo_menu
+                    fi
+                else
+                    message="${GREEN}Not enough stamina!${NONE}                7) ${YELLOW}End Turn${NONE}"
+                    echo_menu
+                fi
+                echo_menu 
                 ;;
             3)  
                 player_max_stm=$(player.max_stamina)
