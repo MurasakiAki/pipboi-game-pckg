@@ -14,6 +14,8 @@ PER=6
 DEX=7
 AGI=8
 is_defending=9
+is_on_fire=10
+fire_time=11
 
 
 character.property() {
@@ -112,6 +114,24 @@ character.is_defending() {
         character.property is_defending = "$2"
     else
         character.property is_defending
+    fi
+}
+
+character.is_on_fire() {
+    if [ "$1" == "=" ]
+    then
+        character.property is_on_fire = "$2"
+    else
+        character.property is_on_fire
+    fi
+}
+
+character.fire_time() {
+    if [ "$1" == "=" ]
+    then
+        character.property fire_time = "$2"
+    else
+        character.property fire_time
     fi
 }
 

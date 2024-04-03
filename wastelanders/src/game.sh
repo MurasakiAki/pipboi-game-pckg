@@ -43,6 +43,8 @@ player.PER = 6
 player.DEX = 0
 player.AGI = 15
 player.is_defending = 0
+player.is_on_fire = 0
+player.fire_time = 0
 
 item enemy_weapon
 enemy_weapon.init "Attack" 5 5
@@ -54,6 +56,8 @@ enemy.PER = 0
 enemy.DEX = 3
 enemy.AGI = 10
 enemy.is_defending = 0
+enemy.is_on_fire = 0
+enemy.fire_time = 0
 
 function change_enemy() {
     enemy_weapon.init "Attack" 8 10
@@ -63,6 +67,8 @@ function change_enemy() {
     enemy.DEX = 8
     enemy.AGI = 20
     enemy.is_defending = 0
+    enemy.is_on_fire = 0
+    enemy.fire_time = 0
 }
 
 function who_is_faster() {
@@ -173,9 +179,37 @@ function player_turn() {
                     message="What do you want to use?"
                     read -p "What will you use: " item_to_use
                     case "$item_to_use" in
-                        1) ;;
-                        2) ;;
-                        3) ;;
+                        1) #mlt
+                            player_stm=$(player.current_stamina)
+                            mlt_qnt=$(molotov.quantity)
+                            mlt_cost=4
+                            if [ "$player_stm" -ge "$mlt_cost" ]; then
+                                if [ "$mlt_qnt" -gt "0" ]; then
+                                    if [ "$(enemy.is_on_fire)" -eq "0" ]; then
+                                        molotov.quantity = $((mlt_qnt - 1))
+                                        player.current_stamina = $((player_stm - mlt_cost))
+                                        enemy.is_on_fire = 1
+                                        enemy.fire_time = 3
+                                        echo_use_menu
+                                    else
+                                        message="${ORANGE}Enemy is already on fire${NONE}"
+                                        echo_use_menu
+                                    fi
+                                else
+                                    message="${ORANGE}Not enough molotovs${NONE}"
+                                    echo_use_menu
+                                fi
+                            else
+                                message="${GREEN}Not enough stamina!${NONE}"
+                                echo_use_menu
+                            fi
+                            ;;
+                        2) #smb
+                            ;;
+                        3) 
+                            echo_menu
+                            break
+                            ;;
                         *) message="${BRED}Invalid input${NONE}" ;;
                     esac
                 done
@@ -228,6 +262,16 @@ function enemy_turn() {
     echo_enemy_turn
     enemy.is_defending = "0"
     enemy.current_stamina = $(enemy.max_stamina)
+    if [ "$(enemy.is_on_fire)" -eq "1" ] && [ "$(enemy.fire_time)" -gt "0" ]; then
+        damage=$(calculate_percentage "$(weapon.quantity)" 10)
+        enemy_chealth=$(enemy.current_health)
+        enemy.current_health = $((enemy_chealth - damage))
+        f_time=$(enemy.fire_time)
+        enemy.fire_time = $((f_time - 1))
+        if [ "$(enemy.fire_time)" -eq "0" ]; then
+            enemy.is_on_fire = 0
+        fi
+    fi
     until [ "$(enemy.current_stamina)" -le "0" ]; do
         echo_menu
         echo -e "${RED}ENEMY TURN${NONE}"
