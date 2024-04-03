@@ -45,6 +45,8 @@ player.AGI = 15
 player.is_defending = 0
 player.is_on_fire = 0
 player.fire_time = 0
+player.is_smoked = 0
+player.smoke_time = 0
 
 item enemy_weapon
 enemy_weapon.init "Attack" 5 5
@@ -58,6 +60,8 @@ enemy.AGI = 10
 enemy.is_defending = 0
 enemy.is_on_fire = 0
 enemy.fire_time = 0
+enemy.is_smoked = 0
+enemy.smoke_time = 0
 
 function change_enemy() {
     enemy_weapon.init "Attack" 8 10
@@ -69,6 +73,8 @@ function change_enemy() {
     enemy.is_defending = 0
     enemy.is_on_fire = 0
     enemy.fire_time = 0
+    enemy.is_smoked = 0
+    enemy.smoke_time = 0
 }
 
 function who_is_faster() {
@@ -205,6 +211,29 @@ function player_turn() {
                             fi
                             ;;
                         2) #smb
+                            player_stm=$(player.current_stamina)
+                            smb_qnt=$(smoke_bomb.quantity)
+                            smb_cost=6
+                            if [ "$player_stm" -ge "$smb_cost" ]; then
+                                if [ "$smb_qnt" -gt "0" ]; then
+                                    if [ "$(enemy.is_smoked)" -eq "0" ]; then
+                                        molotov.quantity = $((smb_qnt - 1))
+                                        player.current_stamina = $((player_stm - smb_cost))
+                                        enemy.is_smoked = 1
+                                        enemy.smoke_time = 3
+                                        echo_use_menu
+                                    else
+                                        message="${ORANGE}Enemy is already smoked${NONE}"
+                                        echo_use_menu
+                                    fi
+                                else
+                                    message="${ORANGE}Not enough smoke bombs${NONE}"
+                                    echo_use_menu
+                                fi
+                            else
+                                message="${GREEN}Not enough stamina!${NONE}"
+                                echo_use_menu
+                            fi
                             ;;
                         3) 
                             echo_menu
@@ -247,7 +276,7 @@ function player_turn() {
                             message="${BRED}Invalid choice${NONE}                     7) ${YELLOW}End Turn${NONE}"
                             ;;
                     esac
-                done 
+                done
                 ;;
             7) TURN=$((TURN + 1))
                 ;;
@@ -261,7 +290,6 @@ function player_turn() {
 function enemy_turn() {
     echo_enemy_turn
     enemy.is_defending = "0"
-    enemy.current_stamina = $(enemy.max_stamina)
     if [ "$(enemy.is_on_fire)" -eq "1" ] && [ "$(enemy.fire_time)" -gt "0" ]; then
         damage=$(calculate_percentage "$(weapon.quantity)" 10)
         enemy_chealth=$(enemy.current_health)
@@ -272,6 +300,19 @@ function enemy_turn() {
             enemy.is_on_fire = 0
         fi
     fi
+    if [ "$(enemy.is_smoked)" -eq "1" ] && [ "$(smoke_time)" -gt "0" ]; then
+        enemy_max_stm=$(enemy.max_stamina)
+        stm_debuff=$((enemy_max_stm / 2))
+        enemy.current_stamina = $stm_debuff
+        s_time=$(enemy.smoke_time)
+        enemy.smoke_time = $((s_time - 1))
+        if [ "$(enemy.smoke_time)" -eq "0" ]; then
+            enemy.is_smoked = 0
+        fi
+    else
+        enemy.current_stamina = $(enemy.max_stamina)
+    fi
+
     until [ "$(enemy.current_stamina)" -le "0" ]; do
         echo_menu
         echo -e "${RED}ENEMY TURN${NONE}"
