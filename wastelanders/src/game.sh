@@ -120,31 +120,34 @@ function player_turn() {
                 player_stm=$(player.current_stamina)
                 syr_qnt=$(syringe.quantity)
                 heal_cost=4
+
                 if [ "$player_stm" -ge "$heal_cost" ]; then
                     if [ "$syr_qnt" -gt "0" ]; then
                         player_max_hp=$(player.max_health)
-                        health_to_add=$(calculate_percentage $player_max_hp 25)
+                        health_to_add=$(calculate_percentage "$player_max_hp" 25)
                         player_chealth=$(player.current_health)
                         final_health=$((player_chealth + health_to_add))
-                        if [ "$final_health" -lt "$player_max_hp" ]; then
-                            player.current_stamina = $((player_stm - heal_cost))
-                            syringe.quantity = $((syr_qnt - 1))
-                            player.current_health = $final_health
-                            message="${BRED}You feel relieved${NONE}                 7) ${YELLOW}End Turn${NONE}"
-                            echo_menu
-                        else
+                        if [ "$player_chealth" -eq "$player_max_hp" ]; then
                             player.current_health = $(player.max_health)
                             message="${BRED}You have full health${NONE}               7) ${YELLOW}End Turn${NONE}"
-                            echo_menu
+                        elif [ "$final_health" -gt "$player_max_hp" ]; then
+                            player.current_stamina = $((player_stm - heal_cost))
+                            syringe.quantity = $((syr_qnt - 1))
+                            player.current_health = $(player.max_health)
+                            message="${BRED}You feel relieved${NONE}                 7) ${YELLOW}End Turn${NONE}"
+                        else
+                            player.current_stamina = $((player_stm - heal_cost))
+                            syringe.quantity = $((syr_qnt - 1))
+                            player.current_health = "$final_health"
+                            message="${BRED}You feel relieved${NONE}                 7) ${YELLOW}End Turn${NONE}"
                         fi
                     else 
                         message="${BRED}Not enough syringes${NONE}                7) ${YELLOW}End Turn${NONE}"
-                        echo_menu
                     fi
                 else
                     message="${GREEN}Not enough stamina!${NONE}                7) ${YELLOW}End Turn${NONE}"
-                    echo_menu
                 fi
+
                 echo_menu 
                 ;;
             3)  
@@ -161,9 +164,21 @@ function player_turn() {
                     echo_menu 
                 fi
                 ;;
-            4) echo_menu 
+            4) echo_menu
                 ;;
-            5) echo_menu 
+            5) echo_use_menu 
+                message="What do you want to use?"
+                while true; do
+                    echo -e "$message"
+                    message="What do you want to use?"
+                    read -p "What will you use: " item_to_use
+                    case "$item_to_use" in
+                        1) ;;
+                        2) ;;
+                        3) ;;
+                        *) message="${BRED}Invalid input${NONE}" ;;
+                    esac
+                done
                 ;;
             6) echo_info_menu
                 message="What do you want to know?"
@@ -177,10 +192,10 @@ function player_turn() {
                         2) lines=("SYR" "$(syringe.name)" "By using this item, you'll" "inject yourself with syringe." "" "Will heal you for 25% of your" "max health, uses 5 stamina.")
                             echo_info_menu "${lines[@]}" 
                             ;;
-                        3) lines=("SMB" "$(smoke_bomb.name)" "By using this item, you'll" "thow a smoke bomb" "at your enemy." "" "Decreases stamina of your" "enemy for 3 turns," "uses 6 stamina.")
+                        3) lines=("SMB" "$(smoke_bomb.name)" "By using this item, you'll" "throw a smoke bomb" "at your enemy." "" "Decreases stamina of your" "enemy for 3 turns," "uses 6 stamina.")
                             echo_info_menu "${lines[@]}" 
                             ;;
-                        4) lines=("MLT" "$(molotov.name)" "By using this item, you'll" "thow a molotov coctail at your" "enemy." "" "Hurts enemy for 10% of your" "damage for 3 turns at the" "begining of each turn," "uses 4 stamina." )
+                        4) lines=("MLT" "$(molotov.name)" "By using this item, you'll" "throw a molotov coctail" "at your enemy." "" "Hurts enemy for 10% of your" "damage for 3 turns at the" "beginning of each turn," "uses 4 stamina." )
                             echo_info_menu "${lines[@]}" 
                             ;;
                         5) lines=("DEFEND" "The ability to defend yourself" "is based on your STR." "" "The damage taken in next turn" "will be decreased by each" "point of STR you have + 25% of" "your weapons damage." "" "This ability uses 50% of" "your max stamina.")
