@@ -18,6 +18,18 @@ function get_random_name() {
     fi
 }
 
+function get_description() {
+    enemy_name_file="../enemies/names.txt"
+    if [ -f "$enemy_name_file" ]; then
+        description=$(grep "^$1" "$enemy_name_file" | cut -d "|" -f 2- | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')
+        echo "$description"
+    else
+        echo "Enemy name file doesn't exist."
+        exit 1
+    fi
+}
+
+
 function change_enemy() {
     enemy_weapon.init "Attack" 8 10
     enemy.init "goblin" 30 8

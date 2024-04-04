@@ -258,7 +258,8 @@ function player_turn() {
                     message="What do you want to know?"
                     read -p "Your choice: " choice
                     case "$choice" in
-                        1) echo_info_menu "ENEMY" 
+                        1) lines=("$(enemy.name)" "" "$(get_description "$(enemy.name)")")
+                            echo_info_menu "${lines[@]}"
                             ;;
                         2) lines=("SYR" "$(syringe.name)" "By using this item, you'll" "inject yourself with syringe." "" "Will heal you for 25% of your" "max health, uses 5 stamina.")
                             echo_info_menu "${lines[@]}" 
