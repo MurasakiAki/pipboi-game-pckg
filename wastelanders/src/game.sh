@@ -19,7 +19,7 @@ GRAY='\033[1;30m'
 CYAN='\033[0;36m'
 NONE='\033[0m'
 
-LEVEL=1
+LEVEL=9
 TURN=1
 WHOSE_TURN=""
 
@@ -65,9 +65,21 @@ enemy.is_smoked = 0
 enemy.smoke_time = 0
 enemy.caps = 10
 
-function get_lvl_value() {
-    result=$(echo "scale=4; 1.5 ^ (-2 + $1)" | bc)
-    echo $result
+function get_random_number() {
+    if [ "$#" -eq "0" ]; then
+        start_rnd=1
+        end_rnd=10
+        random_number=$(( RANDOM % (end_rnd - start_rnd + 1) + start_rnd ))
+        echo "$random_number"
+    elif [ "$#" -eq "2" ]; then
+        start_rnd=$1
+        end_rnd=$2
+        random_number=$(( RANDOM % (end_rnd - start_rnd + 1) + start_rnd ))
+        echo "$random_number"
+    else
+        echo "Wrong arguments in get_random_number function."
+        exit 1
+    fi
 }
 
 function change_enemy() {
@@ -184,7 +196,16 @@ function player_turn() {
                     echo_menu 
                 fi
                 ;;
-            4) echo_menu
+            4) 
+                a=$(get_random_number)
+                b=$(get_random_number)
+                mult=$((a * (b + LEVEL / 2)))
+                if [ "$mult" -le "$(player.AGI)" ]; then
+                    message="player ran away $mult $a $b"
+                else
+                    message="player did not ran away $mult $a $b"
+                fi
+                echo_menu
                 ;;
             5) echo_use_menu 
                 message="What do you want to use?"
