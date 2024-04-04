@@ -53,7 +53,7 @@ item enemy_weapon
 enemy_weapon.init "Attack" 5 5
 
 character enemy
-enemy.init "zombie" 20 10
+enemy.init "$(get_random_name)" 20 10
 enemy.STR = 2
 enemy.PER = 0
 enemy.DEX = 3
@@ -65,9 +65,14 @@ enemy.is_smoked = 0
 enemy.smoke_time = 0
 enemy.caps = 10
 
+function get_lvl_value() {
+    result=$(echo "scale=4; 1.5 ^ (-2 + $1)" | bc)
+    echo $result
+}
+
 function change_enemy() {
     enemy_weapon.init "Attack" 8 10
-    enemy.init "goblin" 30 8
+    enemy.init "$(get_random_name)" 30 8
     enemy.STR = 20
     enemy.PER = 10
     enemy.DEX = 8
@@ -289,7 +294,7 @@ function player_turn() {
         esac
     done
 }
-# \frac{2}{3}\left|\frac{ax}{x^{a}}3\right|
+
 function enemy_turn() {
     echo_enemy_turn
     enemy.is_defending = "0"

@@ -7,6 +7,32 @@ calculate_percentage() {
     echo "$(( (number * percentage) / 100 ))"
 }
 
+function get_random_name() {
+    enemy_name_file="../enemies/names.txt"
+    if [ -f "$enemy_name_file" ]; then
+        random_name=$(shuf -n 1 "$enemy_name_file" | cut -d "|" -f 1)
+        echo "$random_name"
+    else
+        echo "Enemy name file doesn't exist."
+        exit 1
+    fi
+}
+
+function change_enemy() {
+    enemy_weapon.init "Attack" 8 10
+    enemy.init "goblin" 30 8
+    enemy.STR = 20
+    enemy.PER = 10
+    enemy.DEX = 8
+    enemy.AGI = 20
+    enemy.is_defending = 0
+    enemy.is_on_fire = 0
+    enemy.fire_time = 0
+    enemy.is_smoked = 0
+    enemy.smoke_time = 0
+    enemy.caps = 15
+}
+
 function decide_action() {
     enemy_chp=$(enemy.current_health)
     enemy_mhp=$(enemy.max_health)
