@@ -47,6 +47,7 @@ player.is_on_fire = 0
 player.fire_time = 0
 player.is_smoked = 0
 player.smoke_time = 0
+player.caps = 0
 
 item enemy_weapon
 enemy_weapon.init "Attack" 5 5
@@ -62,6 +63,7 @@ enemy.is_on_fire = 0
 enemy.fire_time = 0
 enemy.is_smoked = 0
 enemy.smoke_time = 0
+enemy.caps = 10
 
 function change_enemy() {
     enemy_weapon.init "Attack" 8 10
@@ -75,6 +77,7 @@ function change_enemy() {
     enemy.fire_time = 0
     enemy.is_smoked = 0
     enemy.smoke_time = 0
+    enemy.caps = 15
 }
 
 function who_is_faster() {
@@ -217,7 +220,7 @@ function player_turn() {
                             if [ "$player_stm" -ge "$smb_cost" ]; then
                                 if [ "$smb_qnt" -gt "0" ]; then
                                     if [ "$(enemy.is_smoked)" -eq "0" ]; then
-                                        molotov.quantity = $((smb_qnt - 1))
+                                        smoke_bomb.quantity = $((smb_qnt - 1))
                                         player.current_stamina = $((player_stm - smb_cost))
                                         enemy.is_smoked = 1
                                         enemy.smoke_time = 3
@@ -300,7 +303,7 @@ function enemy_turn() {
             enemy.is_on_fire = 0
         fi
     fi
-    if [ "$(enemy.is_smoked)" -eq "1" ] && [ "$(smoke_time)" -gt "0" ]; then
+    if [ "$(enemy.is_smoked)" -eq "1" ] && [ "$(enemy.smoke_time)" -gt "0" ]; then
         enemy_max_stm=$(enemy.max_stamina)
         stm_debuff=$((enemy_max_stm / 2))
         enemy.current_stamina = $stm_debuff
@@ -347,4 +350,5 @@ function start_game() {
         fi
     done
 }
+
 start_game

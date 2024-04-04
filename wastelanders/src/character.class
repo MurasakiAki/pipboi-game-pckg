@@ -18,6 +18,7 @@ is_on_fire=10
 fire_time=11
 is_smoked=12
 smoke_time=13
+caps=14
 
 
 character.property() {
@@ -152,6 +153,15 @@ character.smoke_time() {
         character.property smoke_time = "$2"
     else
         character.property smoke_time
+    fi
+}
+
+character.caps() {
+    if [ "$1" == "=" ]
+    then
+        character.property caps = "$2"
+    else
+        character.property caps
     fi
 }
 
