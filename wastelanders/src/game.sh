@@ -289,7 +289,7 @@ function player_turn() {
         esac
     done
 }
-
+# \frac{2}{3}\left|\frac{ax}{x^{a}}3\right|
 function enemy_turn() {
     echo_enemy_turn
     enemy.is_defending = "0"
