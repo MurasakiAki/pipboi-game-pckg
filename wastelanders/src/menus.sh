@@ -158,6 +158,8 @@ function echo_enemy_turn() {
 
 function echo_enemy_defeated() {
     clear
+    enemy_hp=$(enemy.max_health)
+    SCORE=$(((enemy_hp + LEVEL) / 2))
     echo -e "/============================================\\"
     echo -e "|                                            |"
     echo -e "|                                            |"
