@@ -13,7 +13,7 @@ function get_random_name() {
     fi
 }
 
-function change_enemy() {
+function init_enemy() {
     enemy.STR = $(($(get_random_number) * LEVEL))
     enemy.PER = $(($(get_random_number) * LEVEL))
     enemy.DEX = $(($(get_random_number) * LEVEL))
@@ -34,6 +34,20 @@ function change_enemy() {
     enemy.fire_time = 0
     enemy.is_smoked = 0
     enemy.smoke_time = 0
+
+    if [ "$(enemy.current_health)" -lt "0" ]; then
+        enemy_chp=$(enemy.current_health)
+        enemy_chp=$((enemy_chp * -1))
+        enemy.max_health = $enemy_chp
+        enemy.current_health = $enemy_chp
+    fi
+
+    if [ "$(enemy.current_stamina)" -lt "0"]; then
+        enemy_cstm=$(enemy.current_stamina)
+        enemy_cstm=$((enemy_cstm * -1))
+        enemy.max_stamina = $enemy_cstm
+        enemy.current_stamina = $enemy_cstm
+    fi
 }
 
 function get_description() {

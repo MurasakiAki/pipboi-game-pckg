@@ -23,6 +23,7 @@ NONE='\033[0m'
 LEVEL=1
 TURN=1
 WHOSE_TURN=""
+SCORE=0
 
 # item weapon is special item
 item weapon
@@ -50,19 +51,9 @@ player.is_smoked = 0
 player.smoke_time = 0
 
 item enemy_weapon
-enemy_weapon.init "Attack" 5 5
-
 character enemy
-enemy.init "$(get_random_name)" 20 10
-enemy.STR = 2
-enemy.PER = 0
-enemy.DEX = 3
-enemy.AGI = 10
-enemy.is_defending = 0
-enemy.is_on_fire = 0
-enemy.fire_time = 0
-enemy.is_smoked = 0
-enemy.smoke_time = 0
+
+init_enemy
 
 function who_is_faster() {
     player_agi=$(player.AGI)
@@ -336,7 +327,7 @@ function start_game() {
             enemy_turn
             if [ "$(enemy.current_health)" -le 0 ]; then
                 echo_enemy_defeated
-                change_enemy
+                init_enemy
             else
                 player_turn
             fi
@@ -344,7 +335,7 @@ function start_game() {
             player_turn
             if [ "$(enemy.current_health)" -le 0 ]; then
                 echo_enemy_defeated
-                change_enemy
+                init_enemy
             else
                 enemy_turn
             fi
