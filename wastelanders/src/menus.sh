@@ -78,14 +78,18 @@ function echo_menu() {
 
     str_per_spaces="        "
     dex_agi_spaces="     "
+    lvl_stats_spaces="        "
+    lvl="$LEVEL"
+    caps="$(player.caps)"
+
 
     clear
     echo -e "/============================================\\"
-    echo -e "$(if [ "$(enemy.is_defending)" -eq "1" ]; then echo "${BLUE}$enemy_name_line${NONE}"; else echo "$enemy_name_line"; fi)""|         |"
-    echo -e "| $(if [ "$(enemy.is_on_fire)" -eq "1" ]; then echo "${ORANGE}HP${NONE}"; else echo "HP"; fi):${BRED}$(enemy.current_health)/$(enemy.max_health)${NONE}""$e_health_space""STR:$enemy_str""${str_per_spaces::-${#enemy_str}}""DEX:$enemy_dex""${dex_agi_spaces::-${#enemy_dex}}""|         |"
-    echo -e "| $(if [ "$(enemy.is_smoked)" -eq "1" ]; then echo "${GRAY}STM${NONE}"; else echo "STM"; fi):${BGREEN}$(enemy.current_stamina)/$(enemy.max_stamina)${NONE}""$e_stamina_space""PER:$enemy_per""${str_per_spaces::-${#enemy_per}}""AGI:$enemy_agi""${dex_agi_spaces::-${#enemy_agi}}""|         |"
-    echo -e "|                                  |         |"
-    echo -e "|                                  |         |"
+    echo -e "$(if [ "$(enemy.is_defending)" -eq "1" ]; then echo "${BLUE}$enemy_name_line${NONE}"; else echo "$enemy_name_line"; fi)""| LEVEL:  |"
+    echo -e "| $(if [ "$(enemy.is_on_fire)" -eq "1" ]; then echo "${ORANGE}HP${NONE}"; else echo "HP"; fi):${BRED}$(enemy.current_health)/$(enemy.max_health)${NONE}""$e_health_space""STR:$enemy_str""${str_per_spaces::-${#enemy_str}}""DEX:$enemy_dex""${dex_agi_spaces::-${#enemy_dex}}""| "$lvl"${lvl_stats_spaces::-${#lvl}}""|"
+    echo -e "| $(if [ "$(enemy.is_smoked)" -eq "1" ]; then echo "${GRAY}STM${NONE}"; else echo "STM"; fi):${BGREEN}$(enemy.current_stamina)/$(enemy.max_stamina)${NONE}""$e_stamina_space""PER:$enemy_per""${str_per_spaces::-${#enemy_per}}""AGI:$enemy_agi""${dex_agi_spaces::-${#enemy_agi}}""|=========|"
+    echo -e "|                                  | CAPS:   |"
+    echo -e "|                                  | "$caps"${lvl_stats_spaces::-${#lvl}}""|"
     echo -e "|--------------------------------------------|"
     echo -e "$(if [ "$(player.is_defending)" -eq "1" ]; then echo "${BLUE}$player_name_line${NONE}"; else echo "$player_name_line"; fi)""|  ${BBLUE}ITEMS${NONE}  |"
     echo -e "| HP:${BRED}$(player.current_health)/$(player.max_health)${NONE}""$p_health_space""STR:$player_str""${str_per_spaces::-${#player_str}}""DEX:$player_dex""${dex_agi_spaces::-${#player_dex}}""| ${BRED}SYR${NONE} "$(syringe.quantity)"/9 |"

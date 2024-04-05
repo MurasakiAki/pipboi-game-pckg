@@ -26,12 +26,12 @@ function get_description() {
 
 
 function change_enemy() {
-    enemy_weapon.init "Attack" 8 10
-    enemy.init "goblin" 30 8
+    enemy.init "$(get_random_name)" 30 8
     enemy.STR = $(($(get_random_number) * $LEVEL))
     enemy.PER = $(($(get_random_number) * $LEVEL))
     enemy.DEX = $(($(get_random_number) * $LEVEL))
     enemy.AGI = $(($(get_random_number) * $LEVEL))
+    enemy_weapon.init "Attack" 8 10
     enemy.is_defending = 0
     enemy.is_on_fire = 0
     enemy.fire_time = 0
