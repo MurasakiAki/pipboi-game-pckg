@@ -1,11 +1,6 @@
 #!/bin/bash
 
-#how many percentage from number
-calculate_percentage() {
-    local number="$1"
-    local percentage="$2"
-    echo "$(( (number * percentage) / 100 ))"
-}
+source maths.sh
 
 function get_random_name() {
     enemy_name_file="../enemies/names.txt"
@@ -33,10 +28,10 @@ function get_description() {
 function change_enemy() {
     enemy_weapon.init "Attack" 8 10
     enemy.init "goblin" 30 8
-    enemy.STR = 20
-    enemy.PER = 10
-    enemy.DEX = 8
-    enemy.AGI = 20
+    enemy.STR = $((get_random_number * LEVEL))
+    enemy.PER = $((get_random_number * LEVEL))
+    enemy.DEX = $((get_random_number * LEVEL))
+    enemy.AGI = $((get_random_number * LEVEL))
     enemy.is_defending = 0
     enemy.is_on_fire = 0
     enemy.fire_time = 0
@@ -54,7 +49,7 @@ function decide_action() {
         fi
         echo "defend"
     else
-        enemy_max_stm=$(enemy.max_stm)
+        enemy_max_stm=$(enemy.max_stamina)
         if [ "$(enemy.current_stamina)" -ge "$(enemy_weapon.stm_per_use)" ]; then
             echo "attack"
         elif [ "$(enemy.current_stamina)" -ge "$((enemy_max_stm / 2))" ]; then

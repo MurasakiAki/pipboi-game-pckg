@@ -4,6 +4,7 @@
 . character.h
 . item.h
 
+source maths.sh
 source menus.sh
 source enemy_logic.sh
 
@@ -65,38 +66,6 @@ enemy.is_smoked = 0
 enemy.smoke_time = 0
 enemy.caps = 10
 
-function get_random_number() {
-    if [ "$#" -eq "0" ]; then
-        start_rnd=1
-        end_rnd=10
-        random_number=$(( RANDOM % (end_rnd - start_rnd + 1) + start_rnd ))
-        echo "$random_number"
-    elif [ "$#" -eq "2" ]; then
-        start_rnd=$1
-        end_rnd=$2
-        random_number=$(( RANDOM % (end_rnd - start_rnd + 1) + start_rnd ))
-        echo "$random_number"
-    else
-        echo "Wrong arguments in get_random_number function."
-        exit 1
-    fi
-}
-
-function change_enemy() {
-    enemy_weapon.init "Attack" 8 10
-    enemy.init "$(get_random_name)" 30 8
-    enemy.STR = 20
-    enemy.PER = 10
-    enemy.DEX = 8
-    enemy.AGI = 20
-    enemy.is_defending = 0
-    enemy.is_on_fire = 0
-    enemy.fire_time = 0
-    enemy.is_smoked = 0
-    enemy.smoke_time = 0
-    enemy.caps = 15
-}
-
 function who_is_faster() {
     player_agi=$(player.AGI)
     enemy_agi=$(enemy.AGI)
@@ -136,7 +105,11 @@ function player_turn() {
                         enemy_weapon.quantity = $enemy_dmg
                         e_defend_bonus=$((enemy_str + enemy_w_bonus))
                         final_damage=$((final_damage - e_defend_bonus))
+                        if [ "$final_damage" -lt "0" ]; then
+                            final_damage="0"
+                        fi
                     fi
+
                     enemy_hp=$((enemy_health - final_damage))
                     if [ "$enemy_hp" -lt "0" ]; then
                         enemy_hp="0"
