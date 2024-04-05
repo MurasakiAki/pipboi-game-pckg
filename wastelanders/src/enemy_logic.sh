@@ -13,6 +13,29 @@ function get_random_name() {
     fi
 }
 
+function change_enemy() {
+    enemy.STR = $(($(get_random_number) * LEVEL))
+    enemy.PER = $(($(get_random_number) * LEVEL))
+    enemy.DEX = $(($(get_random_number) * LEVEL))
+    enemy.AGI = $(($(get_random_number) * LEVEL))
+    enemy_str=$(enemy.STR)
+    enemy_dex=$(enemy.DEX)
+    enemy_agi=$(enemy.AGI)
+    hp_beg=$(($(get_random_number 1 5) * enemy_str - LEVEL))
+    hp_end=$(($(get_random_number 6 10) * enemy_str + LEVEL))
+    stm_beg=$(($(get_random_number 1 5) * enemy_dex + LEVEL))
+    stm_end=$(($(get_random_number 6 10) * enemy_agi - LEVEL))
+    enemy.init "$(get_random_name)" "$(($(get_random_number hp_beg hp_end) - enemy_dex))" "$(($(get_random_number stm_beg stm_end) - enemy_str))"
+    enemy_max_stm=$(enemy.max_stamina)
+    w_stm_beg=$((enemy_max_stm - LEVEL))
+    enemy_weapon.init "Attack" "$(($(get_random_number w_stm_beg enemy_max_stm)))" "$(($(get_random_number) * LEVEL))"
+    enemy.is_defending = 0
+    enemy.is_on_fire = 0
+    enemy.fire_time = 0
+    enemy.is_smoked = 0
+    enemy.smoke_time = 0
+}
+
 function get_description() {
     enemy_name_file="../enemies/names.txt"
     if [ -f "$enemy_name_file" ]; then
@@ -22,22 +45,6 @@ function get_description() {
         echo "Enemy name file doesn't exist."
         exit 1
     fi
-}
-
-
-function change_enemy() {
-    enemy.init "$(get_random_name)" 30 8
-    enemy.STR = $(($(get_random_number) * $LEVEL))
-    enemy.PER = $(($(get_random_number) * $LEVEL))
-    enemy.DEX = $(($(get_random_number) * $LEVEL))
-    enemy.AGI = $(($(get_random_number) * $LEVEL))
-    enemy_weapon.init "Attack" 8 10
-    enemy.is_defending = 0
-    enemy.is_on_fire = 0
-    enemy.fire_time = 0
-    enemy.is_smoked = 0
-    enemy.smoke_time = 0
-    enemy.caps = 15
 }
 
 function decide_action() {

@@ -48,7 +48,6 @@ player.is_on_fire = 0
 player.fire_time = 0
 player.is_smoked = 0
 player.smoke_time = 0
-player.caps = 0
 
 item enemy_weapon
 enemy_weapon.init "Attack" 5 5
@@ -64,7 +63,6 @@ enemy.is_on_fire = 0
 enemy.fire_time = 0
 enemy.is_smoked = 0
 enemy.smoke_time = 0
-enemy.caps = 10
 
 function who_is_faster() {
     player_agi=$(player.AGI)

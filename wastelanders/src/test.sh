@@ -1,7 +1,7 @@
 #!/bin/bash
 
-source maths.sh
+. character.h
 
-echo "$(get_random_number)"
+character aki
 
-echo "$(get_random_number 1 4)"
+aki.name
