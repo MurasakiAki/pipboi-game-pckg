@@ -53,8 +53,13 @@ function decide_action() {
             echo "heal"
         fi
         echo "defend"
-    else 
-        echo "attack"
+    else
+        enemy_max_stm=$(enemy.max_stm)
+        if [ "$(enemy.current_stamina)" -ge "$(enemy_weapon.stm_per_use)" ]; then
+            echo "attack"
+        elif [ "$(enemy.current_stamina)" -ge "$((enemy_max_stm / 2))" ]; then
+            echo "defend"
+        fi
     fi
 }
 
