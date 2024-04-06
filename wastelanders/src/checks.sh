@@ -10,7 +10,7 @@ function check_stat() {
     fi
 }
 
-function chcek_lvl_stat() {
+function check_lvl_stat() {
     lvl_stat=$1
     if [ "$lvl_stat" -gt "99999999" ]; then
         lvl_stat="99999999"

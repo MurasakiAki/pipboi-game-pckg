@@ -25,6 +25,24 @@ generate_name_line() {
     echo "$name_line"
 }
 
+function echo_welcome() {
+    clear
+    echo -e "/============================================\\"
+    echo -e "|                                            |"
+    echo -e "|                                            |"
+    echo -e "|                                            |"
+    echo -e "|                                            |"
+    echo -e "|                                            |"
+    echo -e "|          ${CYAN}Welcome to Wastelanders!${NONE}          |"
+    echo -e "|                                            |"
+    echo -e "|                                            |"
+    echo -e "|                                            |"
+    echo -e "|                                            |"
+    echo -e "|                                            |"
+    echo -e "\============================================/"
+    sleep 5
+}
+
 function echo_menu() {
     lvl="$LEVEL"
     score="$SCORE"
@@ -86,7 +104,7 @@ function echo_menu() {
     
 
 
-    clear
+    #clear
     echo -e "/============================================\\"
     echo -e "$(if [ "$(enemy.is_defending)" -eq "1" ]; then echo "${BLUE}$enemy_name_line${NONE}"; else echo "$enemy_name_line"; fi)""| LEVEL   |"
     echo -e "| $(if [ "$(enemy.is_on_fire)" -eq "1" ]; then echo "${ORANGE}HP${NONE}"; else echo "HP"; fi):${BRED}$(enemy.current_health)/$(enemy.max_health)${NONE}""$e_health_space""STR:$enemy_str""${str_per_spaces::-${#enemy_str}}""DEX:$enemy_dex""${dex_agi_spaces::-${#enemy_dex}}""| "$lvl"${lvl_stats_spaces::-${#lvl}}""|"
@@ -182,13 +200,70 @@ function echo_enemy_defeated() {
 }
 
 function echo_use_menu() {
+    lvl="$LEVEL"
+    score="$SCORE"
+    player_name=$(player.name)
+    player_chealth=$(player.current_health)
+    player_cstamina=$(player.current_stamina)
+    player_name_line="$(generate_name_line "$player_name")"
+    player_str=$(player.STR)
+    player_per=$(player.PER)
+    player_dex=$(player.DEX)
+    player_agi=$(player.AGI)
+
+    enemy_name=$(enemy.name)
+    enemy_max_hp=$(enemy.max_health)
+    enemy_chealth=$(enemy.current_health)
+    enemy_max_stm=$(enemy.max_stamina)
+    enemy_cstamina=$(enemy.current_stamina)
+    enemy_name_line="$(generate_name_line "$enemy_name")"
+    enemy_str=$(enemy.STR)
+    enemy_per=$(enemy.PER)
+    enemy_dex=$(enemy.DEX)
+    enemy_agi=$(enemy.AGI)
+
+    p_health_space="  "
+    if [ ${#player_chealth} -eq 2 ]; then
+        p_health_space="$p_health_space "
+    elif [ ${#player_chealth} -eq 1 ]; then
+        p_health_space="$p_health_space  "
+    fi
+
+    p_stamina_space="   "
+    if [ ${#player_cstamina} -eq 3 ]; then
+        p_stamina_space="${p_stamina_space::-2}"
+    elif [ ${#player_cstamina} -eq 1 ]; then
+        p_stamina_space="$p_stamina_space "
+    fi
+
+    e_health_space="    "
+    if [ ${#enemy_chealth} -eq 3 ]; then
+        e_health_space="${e_health_space::-2}"
+    elif [ ${#enemy_chealth} -eq 1 ] && [ ${#enemy_max_hp} -gt 1 ]; then
+        e_health_space="$e_health_space "
+    elif [ ${#enemy_chealth} -eq 1 ] && [ ${#enemy_max_hp} -eq 1 ]; then
+        e_health_space="$e_health_space  "
+    fi
+
+    e_stamina_space="   "
+    if [ ${#enemy_cstamina} -eq 3 ]; then
+        e_stamina_space="${e_stamina_space::-2}"
+    elif [ ${#enemy_cstamina} -eq 1 ] && [ ${#enemy_max_stm} -gt 1 ]; then
+        e_stamina_space="$e_stamina_space "
+    elif [ ${#enemy_cstamina} -eq 1 ] && [ ${#enemy_max_stm} -eq 1 ]; then
+        e_stamina_space="$e_stamina_space  "
+    fi
+
+    str_per_spaces="        "
+    dex_agi_spaces="     "
+    lvl_stats_spaces="        "
     clear
     echo -e "/============================================\\"
-    echo -e "$(if [ "$(enemy.is_defending)" -eq "1" ]; then echo "${BLUE}$enemy_name_line${NONE}"; else echo "$enemy_name_line"; fi)""|         |"
-    echo -e "| $(if [ "$(enemy.is_on_fire)" -eq "1" ]; then echo "${ORANGE}HP${NONE}"; else echo "HP"; fi):${BRED}$(enemy.current_health)/$(enemy.max_health)${NONE}""$e_health_space""STR:$enemy_str""${str_per_spaces::-${#enemy_str}}""DEX:$enemy_dex""${dex_agi_spaces::-${#enemy_dex}}""|         |"
-    echo -e "| $(if [ "$(enemy.is_smoked)" -eq "1" ]; then echo "${GRAY}STM${NONE}"; else echo "STM"; fi):${BGREEN}$(enemy.current_stamina)/$(enemy.max_stamina)${NONE}""$e_stamina_space""PER:$enemy_per""${str_per_spaces::-${#enemy_per}}""AGI:$enemy_agi""${dex_agi_spaces::-${#enemy_agi}}""|         |"
-    echo -e "|                                  |         |"
-    echo -e "|                                  |         |"
+    echo -e "$(if [ "$(enemy.is_defending)" -eq "1" ]; then echo "${BLUE}$enemy_name_line${NONE}"; else echo "$enemy_name_line"; fi)""| LEVEL   |"
+    echo -e "| $(if [ "$(enemy.is_on_fire)" -eq "1" ]; then echo "${ORANGE}HP${NONE}"; else echo "HP"; fi):${BRED}$(enemy.current_health)/$(enemy.max_health)${NONE}""$e_health_space""STR:$enemy_str""${str_per_spaces::-${#enemy_str}}""DEX:$enemy_dex""${dex_agi_spaces::-${#enemy_dex}}""| "$lvl"${lvl_stats_spaces::-${#lvl}}""|"
+    echo -e "| $(if [ "$(enemy.is_smoked)" -eq "1" ]; then echo "${GRAY}STM${NONE}"; else echo "STM"; fi):${BGREEN}$(enemy.current_stamina)/$(enemy.max_stamina)${NONE}""$e_stamina_space""PER:$enemy_per""${str_per_spaces::-${#enemy_per}}""AGI:$enemy_agi""${dex_agi_spaces::-${#enemy_agi}}""|=========|"
+    echo -e "|                                  | CAPS    |"
+    echo -e "|                                  | "$score"${lvl_stats_spaces::-${#score}}""|"
     echo -e "|--------------------------------------------|"
     echo -e "$(if [ "$(player.is_defending)" -eq "1" ]; then echo "${BLUE}$player_name_line${NONE}"; else echo "$player_name_line"; fi)""|  ${BBLUE}ITEMS${NONE}  |"
     echo -e "| HP:${BRED}$(player.current_health)/$(player.max_health)${NONE}""$p_health_space""STR:$player_str""${str_per_spaces::-${#player_str}}""DEX:$player_dex""${dex_agi_spaces::-${#player_dex}}""| ${BRED}SYR${NONE} "$(syringe.quantity)"/9 |"

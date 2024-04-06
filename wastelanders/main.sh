@@ -52,9 +52,7 @@ login() {
 }
 
 while true; do
-    clear
-    echo "Welcome to Wastelanders!"
-    sleep 5
+    echo_welcome
     while true; do
         clear
         read -p "Do you want to [L]ogin or [r]egister? " choice
@@ -102,8 +100,8 @@ EOF
     case $go_to in
         1)
             clear
-            echo "game start"
-            break
+            cd src
+            bash game.sh
             ;;
         2)
             echo "there should be options"
