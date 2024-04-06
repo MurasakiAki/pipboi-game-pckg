@@ -24,6 +24,8 @@ LEVEL=1
 TURN=1
 WHOSE_TURN=""
 SCORE=0
+RAN_AWAY=0
+DEFEATED_ENEMIES=0
 
 # item weapon is special item
 item weapon
@@ -164,6 +166,7 @@ function player_turn() {
                 mult=$((a * (b + LEVEL / 2)))
                 if [ "$mult" -le "$(player.AGI)" ]; then
                     message="player ran away $mult $a $b"
+                    RAN_AWAY=1
                 else
                     message="player did not ran away $mult $a $b"
                 fi
@@ -297,7 +300,7 @@ function enemy_turn() {
         if [ "$(enemy.is_smoked)" -eq "1" ] && [ "$(enemy.smoke_time)" -gt "0" ]; then
             enemy_max_stm=$(enemy.max_stamina)
             stm_debuff=$((enemy_max_stm / 2))
-            enemy.current_stamina = $stm_debuff
+            enemy.current_stamina = "$stm_debuff"
             s_time=$(enemy.smoke_time)
             enemy.smoke_time = $((s_time - 1))
             if [ "$(enemy.smoke_time)" -eq "0" ]; then
@@ -307,15 +310,26 @@ function enemy_turn() {
             enemy.current_stamina = $(enemy.max_stamina)
         fi
 
-        until [ "$(enemy.current_stamina)" -le "0" ]; do
-            echo_menu
-            echo -e "${RED}ENEMY TURN${NONE}"
-            echo "enemy will ""$(decide_action)"
-            execute_action
-            sleep 2
-            if [ "$(enemy.is_defending)" -eq "1" ]; then
+        while [ "$(enemy.current_stamina)" -gt "0" ]; do
+            action=$(decide_action)
+            if [ "$action" == "pass" ]; then
                 break
             fi
+
+            echo_menu
+            echo -e "${RED}ENEMY TURN${NONE}"
+            echo "enemy will $action"
+            if [ "$action" == "attack" ]; then
+                if [ "$(enemy.current_stamina)" -ge "$(enemy_weapon.stm_per_use)" ]; then
+                    attack
+                fi
+            elif [ "$action" == "defend" ]; then
+                if [ "$(enemy.is_defending)" -eq "0" ]; then
+                    defend
+                fi
+            fi
+            sleep 2
+
         done
     fi
 }
@@ -327,6 +341,9 @@ function start_game() {
             enemy_turn
             if [ "$(enemy.current_health)" -le 0 ]; then
                 echo_enemy_defeated
+                DEFEATED_ENEMIES=$((DEFEATED_ENEMIES + 1))
+                LEVEL=$((DEFEATED_ENEMIES / 5 + 1))
+                LEVEL=$(check_lvl_stat "$LEVEL")
                 init_enemy
             else
                 player_turn
@@ -335,12 +352,16 @@ function start_game() {
             player_turn
             if [ "$(enemy.current_health)" -le 0 ]; then
                 echo_enemy_defeated
+                DEFEATED_ENEMIES=$((DEFEATED_ENEMIES + 1))
+                LEVEL=$((DEFEATED_ENEMIES / 5 + 1))
+                LEVEL=$(check_lvl_stat "$LEVEL")
                 init_enemy
             else
                 enemy_turn
             fi
         fi
     done
+    echo_eval_menu
 }
 
 start_game

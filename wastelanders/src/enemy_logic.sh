@@ -18,9 +18,14 @@ function init_enemy() {
     enemy.PER = $(($(get_random_number) * LEVEL))
     enemy.DEX = $(($(get_random_number) * LEVEL))
     enemy.AGI = $(($(get_random_number) * LEVEL))
-    enemy_str=$(enemy.STR)
-    enemy_dex=$(enemy.DEX)
-    enemy_agi=$(enemy.AGI)
+    enemy_str=$(check_stat "$(enemy.STR)")
+    enemy.STR = $enemy_str
+    enemy_dex=$(check_stat "$(enemy.DEX)")
+    enemy.DEX = $enemy_dex
+    enemy_agi=$(check_stat "$(enemy.AGI)")
+    enemy.AGI = $enemy_agi
+    enemy_per=$(check_stat "$(enemy.PER)")
+    enemy.PER = $enemy_per
     hp_beg=$(($(get_random_number 1 5) * enemy_str - LEVEL))
     hp_end=$(($(get_random_number 6 10) * enemy_str + LEVEL))
     stm_beg=$(($(get_random_number 1 5) * enemy_dex + LEVEL))
@@ -42,7 +47,7 @@ function init_enemy() {
         enemy.current_health = $enemy_chp
     fi
 
-    if [ "$(enemy.current_stamina)" -lt "0"]; then
+    if [ "$(enemy.current_stamina)" -lt "0" ]; then
         enemy_cstm=$(enemy.current_stamina)
         enemy_cstm=$((enemy_cstm * -1))
         enemy.max_stamina = $enemy_cstm
@@ -64,32 +69,29 @@ function get_description() {
 function decide_action() {
     enemy_chp=$(enemy.current_health)
     enemy_mhp=$(enemy.max_health)
-    if [ $enemy_chp -le "$(calculate_percentage "$enemy_mhp" 10)" ]; then
-        if [ "$LEVEL" -ge "20" ]; then
-            echo "heal"
-        fi
-        echo "defend"
-    else
-        enemy_max_stm=$(enemy.max_stamina)
-        if [ "$(enemy.current_stamina)" -ge "$(enemy_weapon.stm_per_use)" ]; then
-            echo "attack"
-        elif [ "$(enemy.current_stamina)" -ge "$((enemy_max_stm / 2))" ]; then
-            echo "defend"
-        fi
-    fi
-}
+    enemy_max_stm=$(enemy.max_stamina)
 
-function execute_action() {
-    action="$(decide_action)"
-    if [ "$action" == "attack" ]; then
-        if [ "$(enemy.current_stamina)" -ge "$(enemy_weapon.stm_per_use)" ]; then
-            attack
-        fi
-    elif [ "$action" == "defend" ]; then
-        if [ "$(enemy.is_defending)" -eq "0" ]; then
-            defend
-        fi
+    if [ $enemy_chp -le "$(calculate_percentage "$enemy_mhp" 10)" ] && [ "$LEVEL" -ge "20" ]; then
+        echo "heal"
+        return
     fi
+
+    if [ $enemy_chp -le "$(calculate_percentage "$enemy_mhp" 10)" ]; then
+        echo "defend"
+        return
+    fi
+
+    if [ "$(enemy.current_stamina)" -ge "$(enemy_weapon.stm_per_use)" ]; then
+        echo "attack"
+        return
+    fi
+
+    if [ "$(enemy.is_defending)" -eq "1" ]; then
+        echo "pass"
+        return
+    fi
+
+    echo "pass"
 }
 
 function attack() {

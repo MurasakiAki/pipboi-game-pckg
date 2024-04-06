@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source checks.sh
+
 RED='\033[0;31m'
 BRED='\033[1;31m'
 ORANGE='\033[1;33m'
@@ -159,7 +161,10 @@ function echo_enemy_turn() {
 function echo_enemy_defeated() {
     clear
     enemy_hp=$(enemy.max_health)
+    score=$SCORE
     SCORE=$(((enemy_hp + LEVEL) / 2))
+    SCORE=$((SCORE + score))
+    SCORE=$(check_lvl_stat "$SCORE")
     echo -e "/============================================\\"
     echo -e "|                                            |"
     echo -e "|                                            |"
@@ -191,4 +196,37 @@ function echo_use_menu() {
     echo -e "| 1) ${ORANGE}MLT${NONE}      2) ${GRAY}SMB${NONE}      3) ${GRAY}BACK${NONE}  | ${ORANGE}MLT${NONE} "$(molotov.quantity)"/9 |"
     echo -e "|                                  |         |"
     echo -e "\============================================/"
+}
+
+pad_with_zeros() {
+    local number="$1"
+    local length=${#number}
+    zeros_to_append=$((8 - length))
+
+    while [ $zeros_to_append -gt 0 ]; do
+        number="0${number}"
+        zeros_to_append=$((zeros_to_append - 1))
+    done
+
+    echo "$number"
+}
+
+function echo_eval_menu() {
+    clear
+    final_score="$(pad_with_zeros "$SCORE")"
+    if [ $RAN_AWAY -eq 0 ]; then
+        echo -e "/============================================\\"
+        echo -e "|                                            |"
+        echo -e "|              YOU HAVE FAILED.              |"
+        echo -e "|                                            |"
+        echo -e "|                   SCORE:                   |"
+        echo -e "|                                            |"
+        echo -e "|                  $final_score                  |"
+        echo -e "|                                            |"
+        echo -e "|                                            |"
+        echo -e "|                                            |"
+        echo -e "|                                            |"
+        echo -e "|                                            |"
+        echo -e "\============================================/"
+    fi
 }
