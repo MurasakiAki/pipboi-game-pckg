@@ -2,32 +2,13 @@
 
 source maths.sh
 
-function calc_damage() {
-    local weapon_dmg=$(weapon.quantity)
-    local player_per=$(player.PER)
-    local player_str=$(player.STR)
-    local base_dmg=$((weapon_dmg + player_str))
-    local random_modifier=$(get_random_number -$((player_per / 3)) $((player_per / 3)))
-    local critical_chance=$(get_random_number 1 100)
-    
-    if [ $critical_chance -le $player_per ]; then
-        base_dmg=$((base_dmg * 2))
-    fi
-    
-    local final_dmg=$((base_dmg + random_modifier))
-    final_dmg=$((final_dmg > 0 ? final_dmg : 0))
-    
-    echo $final_dmg
-}
-
 function do_attack() {
     if [ "$(weapon.stm_per_use)" -le "$(player.current_stamina)" ]; then
         weapon_stm=$(weapon.stm_per_use)
         player_stm=$(player.current_stamina)
         player.current_stamina = $((player_stm - weapon_stm))
         enemy_health=$(enemy.current_health)
-        final_damage=$(calc_damage)
-        echo $final_damage
+        final_damage=$(calc_damage "$(weapon.quantity)" "$(player.PER)" "$(player.STR)")
         if [ "$(enemy.is_defending)" -eq "1" ]; then
             enemy_str=$(enemy.STR)
             enemy_dmg=$(enemy_weapon.quantity)
@@ -38,7 +19,7 @@ function do_attack() {
             if [ "$final_damage" -lt "0" ]; then
                 final_damage="0"
             fi
-        
+        fi
         enemy_hp=$((enemy_health - final_damage))
         if [ "$enemy_hp" -lt "0" ]; then
             enemy_hp="0"
@@ -125,6 +106,7 @@ function do_use() {
                             player.current_stamina = $((player_stm - mlt_cost))
                             enemy.is_on_fire = 1
                             enemy.fire_time = 3
+                            ACTION_MSG="Enemy is on fire!"
                             echo_use_menu
                         else
                             message="${ORANGE}Enemy is already on fire${NONE}"
@@ -150,6 +132,7 @@ function do_use() {
                             player.current_stamina = $((player_stm - smb_cost))
                             enemy.is_smoked = 1
                             enemy.smoke_time = 3
+                            ACTION_MSG="Enemy is smoked!"
                             echo_use_menu
                         else
                             message="${ORANGE}Enemy is already smoked${NONE}"
@@ -165,6 +148,7 @@ function do_use() {
                 fi
                 ;;
             3) 
+                ACTION_MSG="Enemy is waiting."
                 echo_menu
                 break
                 ;;

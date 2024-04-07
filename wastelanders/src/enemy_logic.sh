@@ -33,13 +33,12 @@ function init_enemy() {
     enemy.init "$(get_random_name)" "$(($(get_random_number hp_beg hp_end) - enemy_dex))" "$(($(get_random_number stm_beg stm_end) - enemy_str))"
     enemy_max_stm=$(enemy.max_stamina)
     w_stm_beg=$((enemy_max_stm - LEVEL))
-    enemy_weapon.init "Attack" "$(($(get_random_number w_stm_beg enemy_max_stm)))" "$(($(get_random_number) * LEVEL))"
+    enemy_weapon.init "Attack" "$(($(get_random_number w_stm_beg enemy_max_stm) - enemy_dex))" "$(($(get_random_number) * LEVEL))"
     enemy.is_defending = 0
     enemy.is_on_fire = 0
     enemy.fire_time = 0
     enemy.is_smoked = 0
     enemy.smoke_time = 0
-
     if [ "$(enemy.current_health)" -lt "0" ]; then
         enemy_chp=$(enemy.current_health)
         enemy_chp=$((enemy_chp * -1))
@@ -98,9 +97,8 @@ function attack() {
     eweapon_stm=$(enemy_weapon.stm_per_use)
     enemy_cstm=$(enemy.current_stamina)
     enemy.current_stamina = $((enemy_cstm - eweapon_stm))
-    damage=$(enemy_weapon.quantity)
     player_hp=$(player.current_health)
-    final_e_damage=$damage
+    final_e_damage=$(calc_damage "$(enemy_weapon.quantity)" "$(enemy.PER)" "$(enemy.STR)")
     if [ "$(player.is_defending)" -eq "1" ]; then
         player_str=$(player.STR)
         player_dmg=$(weapon.quantity)
@@ -114,6 +112,9 @@ function attack() {
         player_hp="0"
     fi
     player.current_health = $player_hp
+    ACTION_MSG="Enemy hit you for $final_e_damage"
+    echo_menu
+    sleep 2
 }
 
 function defend() {

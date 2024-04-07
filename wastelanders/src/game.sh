@@ -27,6 +27,7 @@ WHOSE_TURN=""
 SCORE=0
 RAN_AWAY=0
 DEFEATED_ENEMIES=0
+ACTION_MSG="Enemy is waiting."
 
 # item weapon is special item
 item weapon
@@ -70,6 +71,7 @@ function who_is_faster() {
 }
 
 function player_turn() {
+    ACTION_MSG="Enemy is waiting."
     echo_players_turn
     player.is_defending = "0"
     player.current_stamina = $(player.max_stamina)
@@ -108,6 +110,8 @@ function player_turn() {
 }
 
 function enemy_turn() {
+    ACTION_MSG="Enemy turn."
+    echo_menu
     enemy_chp=$(enemy.current_health)
     if [ "$enemy_chp" -gt "0" ]; then
         echo_enemy_turn
@@ -137,24 +141,27 @@ function enemy_turn() {
 
         while [ "$(enemy.current_stamina)" -gt "0" ]; do
             action=$(decide_action)
+            ACTION_MSG="Enemy is deciding."
+            echo_menu
+            sleep 2
+            ACTION_MSG="Enemy is $action""ing!"
+            echo_menu
+            sleep 2
             if [ "$action" == "pass" ]; then
                 break
             fi
 
-            echo_menu
-            echo -e "${RED}ENEMY TURN${NONE}"
-            echo "enemy will $action"
             if [ "$action" == "attack" ]; then
                 if [ "$(enemy.current_stamina)" -ge "$(enemy_weapon.stm_per_use)" ]; then
                     attack
+                    
                 fi
             elif [ "$action" == "defend" ]; then
                 if [ "$(enemy.is_defending)" -eq "0" ]; then
                     defend
                 fi
             fi
-            sleep 2
-
+            
         done
     fi
 }

@@ -46,6 +46,7 @@ function echo_welcome() {
 function echo_menu() {
     lvl="$LEVEL"
     score="$SCORE"
+    act_msg=$ACTION_MSG
     player_name=$(player.name)
     player_chealth=$(player.current_health)
     player_cstamina=$(player.current_stamina)
@@ -101,16 +102,16 @@ function echo_menu() {
     str_per_spaces="        "
     dex_agi_spaces="     "
     lvl_stats_spaces="        "
-    
+    act_msg_spaces="                               "
 
 
-    #clear
+    clear
     echo -e "/============================================\\"
     echo -e "$(if [ "$(enemy.is_defending)" -eq "1" ]; then echo "${BLUE}$enemy_name_line${NONE}"; else echo "$enemy_name_line"; fi)""| LEVEL   |"
     echo -e "| $(if [ "$(enemy.is_on_fire)" -eq "1" ]; then echo "${ORANGE}HP${NONE}"; else echo "HP"; fi):${BRED}$(enemy.current_health)/$(enemy.max_health)${NONE}""$e_health_space""STR:$enemy_str""${str_per_spaces::-${#enemy_str}}""DEX:$enemy_dex""${dex_agi_spaces::-${#enemy_dex}}""| "$lvl"${lvl_stats_spaces::-${#lvl}}""|"
     echo -e "| $(if [ "$(enemy.is_smoked)" -eq "1" ]; then echo "${GRAY}STM${NONE}"; else echo "STM"; fi):${BGREEN}$(enemy.current_stamina)/$(enemy.max_stamina)${NONE}""$e_stamina_space""PER:$enemy_per""${str_per_spaces::-${#enemy_per}}""AGI:$enemy_agi""${dex_agi_spaces::-${#enemy_agi}}""|=========|"
     echo -e "|                                  | CAPS    |"
-    echo -e "|                                  | "$score"${lvl_stats_spaces::-${#score}}""|"
+    echo -e "|   "$act_msg"${act_msg_spaces::-${#act_msg}}| "$score"${lvl_stats_spaces::-${#score}}""|"
     echo -e "|--------------------------------------------|"
     echo -e "$(if [ "$(player.is_defending)" -eq "1" ]; then echo "${BLUE}$player_name_line${NONE}"; else echo "$player_name_line"; fi)""|  ${BBLUE}ITEMS${NONE}  |"
     echo -e "| HP:${BRED}$(player.current_health)/$(player.max_health)${NONE}""$p_health_space""STR:$player_str""${str_per_spaces::-${#player_str}}""DEX:$player_dex""${dex_agi_spaces::-${#player_dex}}""| ${BRED}SYR${NONE} "$(syringe.quantity)"/9 |"
@@ -202,6 +203,7 @@ function echo_enemy_defeated() {
 function echo_use_menu() {
     lvl="$LEVEL"
     score="$SCORE"
+    act_msg=$ACTION_MSG
     player_name=$(player.name)
     player_chealth=$(player.current_health)
     player_cstamina=$(player.current_stamina)
@@ -257,13 +259,16 @@ function echo_use_menu() {
     str_per_spaces="        "
     dex_agi_spaces="     "
     lvl_stats_spaces="        "
+    act_msg_spaces="                               "
+
+
     clear
     echo -e "/============================================\\"
     echo -e "$(if [ "$(enemy.is_defending)" -eq "1" ]; then echo "${BLUE}$enemy_name_line${NONE}"; else echo "$enemy_name_line"; fi)""| LEVEL   |"
     echo -e "| $(if [ "$(enemy.is_on_fire)" -eq "1" ]; then echo "${ORANGE}HP${NONE}"; else echo "HP"; fi):${BRED}$(enemy.current_health)/$(enemy.max_health)${NONE}""$e_health_space""STR:$enemy_str""${str_per_spaces::-${#enemy_str}}""DEX:$enemy_dex""${dex_agi_spaces::-${#enemy_dex}}""| "$lvl"${lvl_stats_spaces::-${#lvl}}""|"
     echo -e "| $(if [ "$(enemy.is_smoked)" -eq "1" ]; then echo "${GRAY}STM${NONE}"; else echo "STM"; fi):${BGREEN}$(enemy.current_stamina)/$(enemy.max_stamina)${NONE}""$e_stamina_space""PER:$enemy_per""${str_per_spaces::-${#enemy_per}}""AGI:$enemy_agi""${dex_agi_spaces::-${#enemy_agi}}""|=========|"
     echo -e "|                                  | CAPS    |"
-    echo -e "|                                  | "$score"${lvl_stats_spaces::-${#score}}""|"
+    echo -e "|   "$act_msg"${act_msg_spaces::-${#act_msg}}| "$score"${lvl_stats_spaces::-${#score}}""|"
     echo -e "|--------------------------------------------|"
     echo -e "$(if [ "$(player.is_defending)" -eq "1" ]; then echo "${BLUE}$player_name_line${NONE}"; else echo "$player_name_line"; fi)""|  ${BBLUE}ITEMS${NONE}  |"
     echo -e "| HP:${BRED}$(player.current_health)/$(player.max_health)${NONE}""$p_health_space""STR:$player_str""${str_per_spaces::-${#player_str}}""DEX:$player_dex""${dex_agi_spaces::-${#player_dex}}""| ${BRED}SYR${NONE} "$(syringe.quantity)"/9 |"
