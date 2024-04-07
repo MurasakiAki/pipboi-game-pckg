@@ -15,31 +15,37 @@ function get_random_name() {
 
 function init_enemy() {
     # Assigning random values to enemy attributes
-    enemy.STR = $(( $(get_random_number) * LEVEL ))
-    enemy.PER = $(( $(get_random_number) * LEVEL ))
-    enemy.DEX = $(( $(get_random_number) * LEVEL ))
-    enemy.AGI = $(( $(get_random_number) * LEVEL ))
+    enemy.STR = $(( $(get_random_number 1 5) * LEVEL ))
+    enemy.PER = $(( $(get_random_number 1 5) * LEVEL ))
+    enemy.DEX = $(( $(get_random_number 1 5) * LEVEL ))
+    enemy.AGI = $(( $(get_random_number 1 5) * LEVEL ))
     enemy_str=$(enemy.STR)
     enemy_dex=$(enemy.DEX)
 
     # Calculate enemy health and stamina based on STR and DEX
-    local enemy_health=$(( (enemy_str + LEVEL) * $(get_random_number 1 4)  ))
-    local enemy_stamina=$(( (enemy_dex + LEVEL) * $(get_random_number 1 4) ))
+    local enemy_health=$(( enemy_str * $(get_random_number 5 10) ))
+    local enemy_stamina=$(( enemy_dex * $(get_random_number 5 10) ))
 
     # Initialize enemy with random name, health, and stamina
     local enemy_name=$(get_random_name)
     enemy.init "$enemy_name" $enemy_health $enemy_stamina
 
-    local weapon_stamina_cost=$((enemy_stamina / enemy_dex ))
-    local weapon_damage=$(( $(get_random_number) * LEVEL ))
-    # Initialize enemy weapon attributes
+    # Calculate weapon stamina cost based on DEX
+    local weapon_stamina_cost=$(( enemy_dex > 0 ? enemy_stamina / enemy_dex : enemy_stamina ))
+    
+    # Ensure weapon stamina cost is non-negative and influenced by DEX
     if [ "$weapon_stamina_cost" -lt "0" ]; then
-        weapon_stamina_cost=$((-1 * weapon_stamina_cost))
+        weapon_stamina_cost=$(( -1 * weapon_stamina_cost ))
     elif [ "$weapon_stamina_cost" -eq "0" ]; then
         weapon_stamina_cost=$enemy_dex
+        enemy_stamina=$enemy_dex
+    fi
+
+    # Initialize enemy weapon attributes
+    local weapon_damage=$(( $(get_random_number 1 10) * LEVEL - enemy_dex))
+    if [ "$weapon_damage" -le "0" ]; then
         weapon_damage=1
     fi
-    
     enemy_weapon.init "Attack" $weapon_stamina_cost $weapon_damage
 
     # Additional enemy properties
@@ -49,17 +55,15 @@ function init_enemy() {
     enemy.is_smoked = 0
     enemy.smoke_time = 0
     
-    # Ensuring non-negative health and stamina
+    # Ensure non-negative health and stamina
     if [ "$(enemy.current_health)" -lt "0" ]; then
-        enemy_health=$(enemy.current_health)
-        enemy_health=$((enemy_health * -1))
+        enemy_health=$(( -1 * enemy.current_health ))
         enemy.max_health = $enemy_health
         enemy.current_health = $enemy_health
     fi
 
     if [ "$(enemy.current_stamina)" -lt "0" ]; then
-        enemy_stamina=$(enemy.current_stamina)
-        enemy_stamina=$((enemy_stamina * -1))
+        enemy_stamina=$(( -1 * enemy.current_stamina ))
         enemy.max_stamina = $enemy_stamina
         enemy.current_stamina = $enemy_stamina
     fi
