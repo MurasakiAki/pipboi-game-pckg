@@ -21,6 +21,7 @@ function do_attack() {
             fi
         fi
         enemy_hp=$((enemy_health - final_damage))
+        ACTION_MSG="You hit enemy for $final_damage"
         if [ "$enemy_hp" -lt "0" ]; then
             enemy_hp="0"
         fi

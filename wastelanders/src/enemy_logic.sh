@@ -14,43 +14,54 @@ function get_random_name() {
 }
 
 function init_enemy() {
-    enemy.STR = $(($(get_random_number) * LEVEL))
-    enemy.PER = $(($(get_random_number) * LEVEL))
-    enemy.DEX = $(($(get_random_number) * LEVEL))
-    enemy.AGI = $(($(get_random_number) * LEVEL))
-    enemy_str=$(check_stat "$(enemy.STR)")
-    enemy.STR = $enemy_str
-    enemy_dex=$(check_stat "$(enemy.DEX)")
-    enemy.DEX = $enemy_dex
-    enemy_agi=$(check_stat "$(enemy.AGI)")
-    enemy.AGI = $enemy_agi
-    enemy_per=$(check_stat "$(enemy.PER)")
-    enemy.PER = $enemy_per
-    hp_beg=$(($(get_random_number 1 5) * enemy_str - LEVEL))
-    hp_end=$(($(get_random_number 6 10) * enemy_str + LEVEL))
-    stm_beg=$(($(get_random_number 1 5) * enemy_dex + LEVEL))
-    stm_end=$(($(get_random_number 6 10) * enemy_agi - LEVEL))
-    enemy.init "$(get_random_name)" "$(($(get_random_number hp_beg hp_end) - enemy_dex))" "$(($(get_random_number stm_beg stm_end) - enemy_str))"
-    enemy_max_stm=$(enemy.max_stamina)
-    w_stm_beg=$((enemy_max_stm - LEVEL))
-    enemy_weapon.init "Attack" "$(($(get_random_number w_stm_beg enemy_max_stm) - enemy_dex))" "$(($(get_random_number) * LEVEL))"
+    # Assigning random values to enemy attributes
+    enemy.STR = $(( $(get_random_number) * LEVEL ))
+    enemy.PER = $(( $(get_random_number) * LEVEL ))
+    enemy.DEX = $(( $(get_random_number) * LEVEL ))
+    enemy.AGI = $(( $(get_random_number) * LEVEL ))
+    enemy_str=$(enemy.STR)
+    enemy_dex=$(enemy.DEX)
+
+    # Calculate enemy health and stamina based on STR and DEX
+    local enemy_health=$(( (enemy_str + LEVEL) * $(get_random_number 1 4)  ))
+    local enemy_stamina=$(( (enemy_dex + LEVEL) * $(get_random_number 1 4) ))
+
+    # Initialize enemy with random name, health, and stamina
+    local enemy_name=$(get_random_name)
+    enemy.init "$enemy_name" $enemy_health $enemy_stamina
+
+    local weapon_stamina_cost=$((enemy_stamina / enemy_dex ))
+    local weapon_damage=$(( $(get_random_number) * LEVEL ))
+    # Initialize enemy weapon attributes
+    if [ "$weapon_stamina_cost" -lt "0" ]; then
+        weapon_stamina_cost=$((-1 * weapon_stamina_cost))
+    elif [ "$weapon_stamina_cost" -eq "0" ]; then
+        weapon_stamina_cost=$enemy_dex
+        weapon_damage=1
+    fi
+    
+    enemy_weapon.init "Attack" $weapon_stamina_cost $weapon_damage
+
+    # Additional enemy properties
     enemy.is_defending = 0
     enemy.is_on_fire = 0
     enemy.fire_time = 0
     enemy.is_smoked = 0
     enemy.smoke_time = 0
+    
+    # Ensuring non-negative health and stamina
     if [ "$(enemy.current_health)" -lt "0" ]; then
-        enemy_chp=$(enemy.current_health)
-        enemy_chp=$((enemy_chp * -1))
-        enemy.max_health = $enemy_chp
-        enemy.current_health = $enemy_chp
+        enemy_health=$(enemy.current_health)
+        enemy_health=$((enemy_health * -1))
+        enemy.max_health = $enemy_health
+        enemy.current_health = $enemy_health
     fi
 
     if [ "$(enemy.current_stamina)" -lt "0" ]; then
-        enemy_cstm=$(enemy.current_stamina)
-        enemy_cstm=$((enemy_cstm * -1))
-        enemy.max_stamina = $enemy_cstm
-        enemy.current_stamina = $enemy_cstm
+        enemy_stamina=$(enemy.current_stamina)
+        enemy_stamina=$((enemy_stamina * -1))
+        enemy.max_stamina = $enemy_stamina
+        enemy.current_stamina = $enemy_stamina
     fi
 }
 

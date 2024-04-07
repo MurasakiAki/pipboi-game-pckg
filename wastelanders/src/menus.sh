@@ -26,7 +26,7 @@ generate_name_line() {
 }
 
 function echo_welcome() {
-    clear
+    #clear
     echo -e "/============================================\\"
     echo -e "|                                            |"
     echo -e "|                                            |"
@@ -105,7 +105,7 @@ function echo_menu() {
     act_msg_spaces="                               "
 
 
-    clear
+    #clear
     echo -e "/============================================\\"
     echo -e "$(if [ "$(enemy.is_defending)" -eq "1" ]; then echo "${BLUE}$enemy_name_line${NONE}"; else echo "$enemy_name_line"; fi)""| LEVEL   |"
     echo -e "| $(if [ "$(enemy.is_on_fire)" -eq "1" ]; then echo "${ORANGE}HP${NONE}"; else echo "HP"; fi):${BRED}$(enemy.current_health)/$(enemy.max_health)${NONE}""$e_health_space""STR:$enemy_str""${str_per_spaces::-${#enemy_str}}""DEX:$enemy_dex""${dex_agi_spaces::-${#enemy_dex}}""| "$lvl"${lvl_stats_spaces::-${#lvl}}""|"
@@ -125,7 +125,7 @@ function echo_menu() {
 function echo_info_menu() {
     lines=("$@")
     clear_lines="                              "
-    clear
+    #clear
     echo -e "/============================================\\"
     echo -e "| ${CYAN}INFO MENU${NONE}  | ${GRAY}${lines[0]}$(if [ "${lines[0]}" == "" ]; then printf "%s" "$clear_lines"; else echo "${clear_lines::-${#lines[0]}}"; fi)${NONE}|"
     echo -e "| 1) ${RED}ENEMY${NONE}   | ${lines[1]}$(if [ "${lines[1]}" == "" ]; then printf "%s" "$clear_lines"; else echo "${clear_lines::-${#lines[1]}}"; fi)|"
@@ -142,7 +142,7 @@ function echo_info_menu() {
 }
 
 function echo_players_turn() {
-    clear
+    #clear
     echo -e "/============================================\\"
     echo -e "|                                            |"
     echo -e "|                                            |"
@@ -160,7 +160,7 @@ function echo_players_turn() {
 }
 
 function echo_enemy_turn() {
-    clear
+    #clear
     echo -e "/============================================\\"
     echo -e "|                                            |"
     echo -e "|                                            |"
@@ -178,7 +178,7 @@ function echo_enemy_turn() {
 }
 
 function echo_enemy_defeated() {
-    clear
+    #clear
     enemy_hp=$(enemy.max_health)
     score=$SCORE
     SCORE=$(((enemy_hp + LEVEL) / 2))
@@ -262,7 +262,7 @@ function echo_use_menu() {
     act_msg_spaces="                               "
 
 
-    clear
+    #clear
     echo -e "/============================================\\"
     echo -e "$(if [ "$(enemy.is_defending)" -eq "1" ]; then echo "${BLUE}$enemy_name_line${NONE}"; else echo "$enemy_name_line"; fi)""| LEVEL   |"
     echo -e "| $(if [ "$(enemy.is_on_fire)" -eq "1" ]; then echo "${ORANGE}HP${NONE}"; else echo "HP"; fi):${BRED}$(enemy.current_health)/$(enemy.max_health)${NONE}""$e_health_space""STR:$enemy_str""${str_per_spaces::-${#enemy_str}}""DEX:$enemy_dex""${dex_agi_spaces::-${#enemy_dex}}""| "$lvl"${lvl_stats_spaces::-${#lvl}}""|"
@@ -292,7 +292,7 @@ pad_with_zeros() {
 }
 
 function echo_eval_menu() {
-    clear
+    #clear
     final_score="$(pad_with_zeros "$SCORE")"
     if [ $RAN_AWAY -eq 0 ]; then
         echo -e "/============================================\\"
