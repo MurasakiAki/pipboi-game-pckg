@@ -8,6 +8,7 @@ source maths.sh
 source menus.sh
 source player_logic.sh
 source enemy_logic.sh
+source create_char.sh
 
 RED='\033[0;31m'
 BRED='\033[1;31m'
@@ -28,6 +29,8 @@ SCORE=0
 RAN_AWAY=0
 DEFEATED_ENEMIES=0
 ACTION_MSG="Enemy is waiting."
+RACE=""
+CLASS=""
 
 # item weapon is special item
 item weapon
@@ -167,6 +170,7 @@ function enemy_turn() {
 }
 
 function start_game() {
+    create_character
     until [ "$(player.current_health)" -le 0 ]; do
         whose_turn=$(who_is_faster)
         if [ "$whose_turn" == "enemy" ]; then
