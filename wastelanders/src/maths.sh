@@ -24,6 +24,50 @@ function get_random_number() {
     fi
 }
 
+function get_random_name() {
+    local enemy_name_file="../enemies/names.txt"
+    if [ -f "$enemy_name_file" ]; then
+        local random_name=$(shuf -n 1 "$enemy_name_file" | cut -d "|" -f 1)
+        echo "$random_name"
+    else
+        echo "Enemy name file doesn't exist."
+        exit 1
+    fi
+}
+
+function get_description() {
+    local enemy_name_file="../enemies/names.txt"
+    if [ -f "$enemy_name_file" ]; then
+        local description=$(grep "^$1" "$enemy_name_file" | cut -d "|" -f 2- | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')
+        echo "$description"
+    else
+        echo "Enemy name file doesn't exist."
+        exit 1
+    fi
+}
+
+function get_random_wpn_name() {
+    local wpn_name_file="../weapons/names.txt"
+    if [ -f "$wpn_name_file" ]; then
+        local random_name=$(shuf -n 1 "$wpn_name_file" | cut -d "|" -f 1)
+        echo "$random_name"
+    else
+        echo "Weapon name file doesn't exist."
+        exit 1
+    fi
+}
+
+function get_wpn_description() {
+    local wpn_name_file="../enemies/names.txt"
+    if [ -f "$enemy_name_file" ]; then
+        local description=$(grep "^$1" "$wpn_name_file" | cut -d "|" -f 2- | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')
+        echo "$description"
+    else
+        echo "Weapon name file doesn't exist."
+        exit 1
+    fi
+}
+
 function calc_damage() {
     local weapon_dmg=$1
     local per=$2

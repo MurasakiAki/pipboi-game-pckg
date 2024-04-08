@@ -2,6 +2,20 @@
 
 source maths.sh
 
+function player_init(){
+    player.init "aki" 100 13
+    player.STR = 2
+    player.PER = 6
+    player.DEX = 0
+    player.AGI = 15
+    player.is_defending = 0
+    player.is_on_fire = 0
+    player.fire_time = 0
+    player.is_smoked = 0
+    player.smoke_time = 0
+    weapon.init "Hacksaw" 2 10
+}
+
 function do_attack() {
     if [ "$(weapon.stm_per_use)" -le "$(player.current_stamina)" ]; then
         weapon_stm=$(weapon.stm_per_use)

@@ -2,17 +2,6 @@
 
 source maths.sh
 
-function get_random_name() {
-    enemy_name_file="../enemies/names.txt"
-    if [ -f "$enemy_name_file" ]; then
-        random_name=$(shuf -n 1 "$enemy_name_file" | cut -d "|" -f 1)
-        echo "$random_name"
-    else
-        echo "Enemy name file doesn't exist."
-        exit 1
-    fi
-}
-
 function init_enemy() {
     # Assigning random values to enemy attributes
     enemy.STR = $(( $(get_random_number 1 5) * LEVEL ))
@@ -66,17 +55,6 @@ function init_enemy() {
         enemy_stamina=$(( -1 * enemy.current_stamina ))
         enemy.max_stamina = $enemy_stamina
         enemy.current_stamina = $enemy_stamina
-    fi
-}
-
-function get_description() {
-    enemy_name_file="../enemies/names.txt"
-    if [ -f "$enemy_name_file" ]; then
-        description=$(grep "^$1" "$enemy_name_file" | cut -d "|" -f 2- | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')
-        echo "$description"
-    else
-        echo "Enemy name file doesn't exist."
-        exit 1
     fi
 }
 

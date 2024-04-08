@@ -32,10 +32,6 @@ ACTION_MSG="Enemy is waiting."
 RACE=""
 CLASS=""
 
-# item weapon is special item
-item weapon
-weapon.init "Hacksaw" 2 10 #quantity = damage
-
 item syringe
 syringe.init "Syringe" 5 5
 
@@ -45,17 +41,9 @@ smoke_bomb.init "Smoke Bomb" 6 2
 item molotov
 molotov.init "Molotov" 4 6
 
+# item weapon is special item
+item weapon
 character player
-player.init "aki" 100 13
-player.STR = 2
-player.PER = 6
-player.DEX = 0
-player.AGI = 15
-player.is_defending = 0
-player.is_on_fire = 0
-player.fire_time = 0
-player.is_smoked = 0
-player.smoke_time = 0
 
 item enemy_weapon
 character enemy
@@ -171,6 +159,7 @@ function enemy_turn() {
 
 function start_game() {
     create_character
+    player_init
     until [ "$(player.current_health)" -le 0 ]; do
         whose_turn=$(who_is_faster)
         if [ "$whose_turn" == "enemy" ]; then
