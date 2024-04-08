@@ -2,7 +2,7 @@
 
 source maths.sh
 
-function player_init(){
+function player_init() {
     player.init "aki" 100 13
     player.STR = 2
     player.PER = 6
