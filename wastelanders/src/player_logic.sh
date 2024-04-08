@@ -53,6 +53,12 @@ function player_init() {
     player.fire_time = 0
     player.is_smoked = 0
     player.smoke_time = 0
+
+    if [ "$CLASS" == "CHEMIST" ]; then
+        syringe.quantity = 5
+        smoke_bomb.quantity = 5
+        molotov.quantity = 5
+    fi
 }
 
 function do_attack() {
@@ -238,6 +244,7 @@ function do_info_menu() {
                 echo_info_menu "${lines[@]}" 
                 ;;
             7) echo_menu 
+                message="What will you do?                  7) ${YELLOW}End Turn${NONE}"
                 break
                 ;;
             8) echo_eval_menu

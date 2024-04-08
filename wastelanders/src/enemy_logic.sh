@@ -99,6 +99,10 @@ function attack() {
         weapon.quantity = $player_dmg
         p_defend_bonus=$((player_str + player_w_bonus))
         final_e_damage=$((final_e_damage - p_defend_bonus))
+        if [ "$CLASS" == "GUARD" ]; then
+            final_e_damage=$((final_e_damage - 2))
+        fi
+
         if [ "$final_e_damage" -lt "0" ]; then
             final_e_damage=0
         fi

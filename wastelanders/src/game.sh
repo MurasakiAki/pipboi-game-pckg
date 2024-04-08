@@ -34,13 +34,13 @@ CLASS=""
 STRT_WPN=0
 
 item syringe
-syringe.init "Syringe" 5 5
+syringe.init "Syringe" 5 3
 
 item smoke_bomb
 smoke_bomb.init "Smoke Bomb" 6 2
 
 item molotov
-molotov.init "Molotov" 4 6
+molotov.init "Molotov" 4 2
 
 item display_wpn1
 
