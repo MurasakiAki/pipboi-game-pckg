@@ -123,21 +123,21 @@ function do_defend() {
         player.is_defending = "1"
         player_stm=$(player.current_stamina)
         player.current_stamina = $((player_stm - defend_cost))
-        message="player is defending"
+        ACTION_MSG="Player is defending!"
     else
         message="${GREEN}Not enough stamina!${NONE}                7) ${YELLOW}End Turn${NONE}"
     fi
 }
 
 function do_run() {
-    a=$(get_random_number)
-    b=$(get_random_number)
-    mult=$((a * (b + LEVEL / 2)))
+    local a=$(get_random_number)
+    local b=$(get_random_number)
+    local mult=$((a * (b + LEVEL / 2)))
     if [ "$mult" -le "$(player.AGI)" ]; then
-        message="player ran away $mult $a $b"
+        ACTION_MSG="Player ran away"
         RAN_AWAY=1
     else
-        message="player did not ran away $mult $a $b"
+        ACTION_MSG="Player did not ran away"
     fi
 }
 

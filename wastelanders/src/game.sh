@@ -93,6 +93,13 @@ function player_turn() {
                 ;;
             4)  do_run
                 echo_menu
+                if [ $RAN_AWAY -eq 1 ]; then
+                    echo_eval_menu
+                    exit 0
+                else
+                    player_hp=$(player.current_health)
+                    player.current_health = $((player_hp / 2))
+                fi
                 ;;
             5) do_use
                 ;;

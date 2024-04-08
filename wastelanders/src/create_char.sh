@@ -4,7 +4,7 @@ source create_char_menus.sh
 
 function init_starting_wpns() {
     display_wpn1.init "$(get_random_wpn_name)" "$(get_random_number 2 $(player.max_stamina))" "$(get_random_number 7 12)"
-    display_wpn2.init "$(get_random_wpn_name)" "$(get_random_number 10 $(player.max_stamina))" "$(get_random_number 10 15)"
+    display_wpn2.init "$(get_random_wpn_name)" "$(get_random_number 8 $(player.max_stamina))" "$(get_random_number 10 13)"
     display_wpn3.init "$(get_random_wpn_name)" "$(get_random_number 5 $(player.max_stamina))" "$(get_random_number 5 15)"
 }
 
