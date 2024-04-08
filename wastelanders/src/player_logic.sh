@@ -3,7 +3,28 @@
 source maths.sh
 
 function player_init() {
-    player.init "aki" 100 13
+    local hp=100
+    local stm=10
+    case "$RACE" in
+        HUMAN)
+            hp=100
+            stm=10
+        ;;
+        MLOK)
+            hp=80
+            stm=18
+        ;;
+        CAKE)
+            hp=120
+            stm=8
+        ;;
+        FISH)
+            hp=50
+            stm=5
+        ;;
+
+    esac
+    player.init "aki" $hp $stm
     player.STR = 2
     player.PER = 6
     player.DEX = 0
