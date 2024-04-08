@@ -1,40 +1,58 @@
 #!/bin/bash
 
 source maths.sh
-
 function player_init() {
     local hp=100
     local stm=10
+    local str=$(get_random_number 1 5)
+    local per=$(get_random_number 1 5)
+    local dex=$(get_random_number 1 5)
+    local agi=$(get_random_number 1 5)
+
     case "$RACE" in
         HUMAN)
             hp=100
             stm=10
+            hp=$(( hp + ($(get_random_number 1 4) * str)))
+            stm=$(( stm + ($(get_random_number 1 4) * dex)))
         ;;
         MLOK)
             hp=80
             stm=18
+            agi=$((agi + 5))
+            hp=$(( hp + ($(get_random_number 1 2) * str)))
+            stm=$(( stm + ($(get_random_number 1 2) * dex)))
         ;;
         CAKE)
             hp=120
             stm=8
+            str=$((str + 5))
+            agi=$((agi - 1))
+            hp=$(( hp + ($(get_random_number 1 2) * str)))
+            stm=$(( stm + ($(get_random_number 1 2) * dex)))
         ;;
         FISH)
             hp=50
             stm=5
+            str=$((str - 1))
+            per=$((per - 1))
+            dex=$((dex - 1))
+            agi=$((agi - 1))
+            hp=$(( hp + ($(get_random_number 1 2) * str)))
+            stm=$(( stm + ($(get_random_number 1 2) * dex)))
         ;;
-
     esac
+
     player.init "aki" $hp $stm
-    player.STR = 2
-    player.PER = 6
-    player.DEX = 0
-    player.AGI = 15
+    player.STR = $str
+    player.PER = $per
+    player.DEX = $dex
+    player.AGI = $agi
     player.is_defending = 0
     player.is_on_fire = 0
     player.fire_time = 0
     player.is_smoked = 0
     player.smoke_time = 0
-    weapon.init "Hacksaw" 2 10
 }
 
 function do_attack() {

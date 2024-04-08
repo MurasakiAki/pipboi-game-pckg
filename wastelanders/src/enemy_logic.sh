@@ -8,8 +8,8 @@ function init_enemy() {
     enemy.PER = $(( $(get_random_number 1 5) * LEVEL ))
     enemy.DEX = $(( $(get_random_number 1 5) * LEVEL ))
     enemy.AGI = $(( $(get_random_number 1 5) * LEVEL ))
-    enemy_str=$(enemy.STR)
-    enemy_dex=$(enemy.DEX)
+    local enemy_str=$(enemy.STR)
+    local enemy_dex=$(enemy.DEX)
 
     # Calculate enemy health and stamina based on STR and DEX
     local enemy_health=$(( enemy_str * $(get_random_number 5 10) ))

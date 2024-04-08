@@ -63,3 +63,25 @@ function echo_class_menu() {
     echo -e "|                                  5) ${BGREEN}ACCEPT${NONE} |"
     echo -e "\============================================/"
 }
+
+function echo_wpn_menu() {
+    start_wpn1="$(display_wpn1.echo "wpn")"
+    start_wpn2=$(display_wpn2.echo "wpn")
+    start_wpn3=$(display_wpn3.echo "wpn")
+    wpn_spaces="                                        "
+
+    clear
+    echo -e "/============================================\\"
+    echo -e "|              ${BGREEN}WEAPON SELECTION${NONE}              |"
+    echo -e "|                                            |"
+    echo -e "| $(if [ $STRT_WPN -eq 1 ]; then echo -e "${BRED}*)${NONE}"; else echo "1)"; fi) $start_wpn1""${wpn_spaces::-${#start_wpn1}}""|"
+    echo -e "|                                            |"
+    echo -e "|                                            |"
+    echo -e "| $(if [ $STRT_WPN -eq 2 ]; then echo -e "${BRED}*)${NONE}"; else echo "2)"; fi) $start_wpn2""${wpn_spaces::-${#start_wpn2}}""|"
+    echo -e "|                                            |"
+    echo -e "|                                            |"
+    echo -e "| $(if [ $STRT_WPN -eq 3 ]; then echo -e "${BRED}*)${NONE}"; else echo "3)"; fi) $start_wpn3""${wpn_spaces::-${#start_wpn3}}""|"
+    echo -e "|                                            |"
+    echo -e "|                                  4) ${BGREEN}ACCEPT${NONE} |"
+    echo -e "\============================================/"
+}

@@ -56,5 +56,10 @@ item.init() {
 }
 
 item.echo() {
-    echo "Item $(item.name) | Quantity: $(item.quantity) | STM per use: $(item.description)" 
+    if [ "$1" != "wpn"]
+    then
+        echo "Item $(item.name) | Quantity: $(item.quantity) | STM per use: $(item.stm_per_use)" 
+    else
+        echo "$(item.name) DMG: $(item.quantity) SPU: $(item.stm_per_use)" 
+    fi
 }
