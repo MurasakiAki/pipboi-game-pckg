@@ -9,7 +9,7 @@ function init_starting_wpns() {
     if [ "$CLASS" == "FIGHTER" ]; then
         local d_wpn1_dmg=$(display_wpn1.quantity)
         local d_wpn2_dmg=$(display_wpn2.quantity)
-        local d_wpn2_dmg=$(display_wpn3.quantity)
+        local d_wpn3_dmg=$(display_wpn3.quantity)
 
         display_wpn1.quantity = $(($d_wpn1_dmg + 2))
         display_wpn2.quantity = $(($d_wpn2_dmg + 2))
@@ -17,7 +17,7 @@ function init_starting_wpns() {
     elif [ "$CLASS" == "PSYCHO" ]; then
         local d_wpn1_spu=$(display_wpn1.stm_per_use)
         local d_wpn2_spu=$(display_wpn2.stm_per_use)
-        local d_wpn2_spu=$(display_wpn3.stm_per_use)
+        local d_wpn3_spu=$(display_wpn3.stm_per_use)
 
         display_wpn1.stm_per_use = $(($d_wpn1_spu - 2))
         display_wpn2.stm_per_use = $(($d_wpn2_spu - 2))
@@ -107,7 +107,7 @@ function choose_wpn() {
                 STRT_WPN=3
                 echo_wpn_menu
             ;;
-            4)
+            5)
                 if [ "$STRT_WPN" != "0" ]; then
                     accepted=1
                 fi

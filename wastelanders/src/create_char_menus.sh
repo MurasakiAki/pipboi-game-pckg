@@ -82,6 +82,6 @@ function echo_wpn_menu() {
     echo -e "|                                            |"
     echo -e "| $(if [ $STRT_WPN -eq 3 ]; then echo -e "${BRED}*)${NONE}"; else echo "3)"; fi) $start_wpn3""${wpn_spaces::-${#start_wpn3}}""|"
     echo -e "|                                            |"
-    echo -e "|                                  4) ${BGREEN}ACCEPT${NONE} |"
+    echo -e "|                                  5) ${BGREEN}ACCEPT${NONE} |"
     echo -e "\============================================/"
 }

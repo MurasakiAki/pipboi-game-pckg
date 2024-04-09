@@ -56,7 +56,7 @@ item.init() {
 }
 
 item.echo() {
-    if [ "$1" != "wpn"]
+    if [ "$1" != "wpn" ]
     then
         echo "Item $(item.name) | Quantity: $(item.quantity) | STM per use: $(item.stm_per_use)" 
     else
