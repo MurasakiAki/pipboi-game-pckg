@@ -1,4 +1,4 @@
-# character.h
-character(){
-    . <(sed "s/character/$1/g" character.class)
+character()
+{
+    .< (sed "s/character/$1/g" character.class)
 }

@@ -51,7 +51,7 @@ item.init() {
         item.quantity = "$3"
     else
         echo "Not enough arguments were given in item.init function."
-        exit 0
+        exit 1
     fi
 }
 

@@ -1,0 +1,46 @@
+# Class for shop_item
+
+shop_item_properties=()
+
+item=0
+price=1
+
+shop_item.property() {
+    if [ "$1" == "=" ]
+    then
+        shop_item_properties[$1]=$3
+    else
+        echo ${shop_item_properties[$1]}
+    fi
+}
+
+shop_item.item() {
+    if [ "$1" == "=" ]
+    then
+        shop_item.property item = $1
+    else
+        shop_item.property item
+}
+
+shop_item.price() {
+    if [ "$1" == "=" ]
+    then
+        shop_item.property price = $1
+    else
+        shop_item.property price
+}
+
+shop_item.init() {
+    if [ "$#" -eq "2" ]
+    then
+        shop_item.item = $1
+        shop_item.price = $2
+    else
+        echo "Not enough arguments were given in shop_item.init function."
+        exit 1
+    fi
+}
+
+shop_item.echo() {
+    echo "$($(shop_item.item).echo) [$(shop_item.price)]"
+}
