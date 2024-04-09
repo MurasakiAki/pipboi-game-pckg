@@ -2,4 +2,8 @@
 
 source shop_menus.sh
 
-echo_shop_menu
+function shop() {
+    echo_shop_menu
+    
+    
+}

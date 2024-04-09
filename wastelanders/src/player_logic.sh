@@ -256,7 +256,7 @@ function do_info_menu() {
                 exit 0
                 ;;
             *) echo_info_menu
-                message="${BRED}Invalid choice${NONE}                     7) ${YELLOW}End Turn${NONE}"
+                message="${BRED}Invalid choice${NONE}"
                 ;;
         esac
     done

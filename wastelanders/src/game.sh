@@ -9,6 +9,7 @@ source menus.sh
 source player_logic.sh
 source enemy_logic.sh
 source create_char.sh
+source shop.sh
 
 RED='\033[0;31m'
 BRED='\033[1;31m'
@@ -184,6 +185,7 @@ function start_game() {
                 DEFEATED_ENEMIES=$((DEFEATED_ENEMIES + 1))
                 LEVEL=$((DEFEATED_ENEMIES / 5 + 1))
                 LEVEL=$(check_lvl_stat "$LEVEL")
+                shop
                 init_enemy
             else
                 player_turn
@@ -195,6 +197,7 @@ function start_game() {
                 DEFEATED_ENEMIES=$((DEFEATED_ENEMIES + 1))
                 LEVEL=$((DEFEATED_ENEMIES / 5 + 1))
                 LEVEL=$(check_lvl_stat "$LEVEL")
+                shop
                 init_enemy
             else
                 enemy_turn
