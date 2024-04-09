@@ -58,8 +58,8 @@ function get_random_wpn_name() {
 }
 
 function get_wpn_description() {
-    local wpn_name_file="../enemies/names.txt"
-    if [ -f "$enemy_name_file" ]; then
+    local wpn_name_file="../weapons/names.txt"
+    if [ -f "$wpn_name_file" ]; then
         local description=$(grep "^$1" "$wpn_name_file" | cut -d "|" -f 2- | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')
         echo "$description"
     else

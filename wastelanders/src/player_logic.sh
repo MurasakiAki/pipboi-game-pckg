@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source maths.sh
+
 function player_init() {
     local hp=100
     local stm=10
@@ -243,11 +244,15 @@ function do_info_menu() {
             6) lines=("RUN" "Running away is a valid tactic" "" "You will try to run away" "from the fight, your chance" "of escaping is based on" "your AGI." "If you succesfully escape," "you will end the game." "If you won't," "there will be consequences.")
                 echo_info_menu "${lines[@]}" 
                 ;;
-            7) echo_menu 
+            7) lines=("WPN" "Weapon" "$(weapon.name)" "" "$(get_wpn_description $(weapon.name))" "" "DMG: $(weapon.quantity)" "SPU: $(weapon.stm_per_use)")
+                echo_info_menu "${lines[@]}" 
+                ;;
+
+            8) echo_menu 
                 message="What will you do?                  7) ${YELLOW}End Turn${NONE}"
                 break
                 ;;
-            8) echo_eval_menu
+            9) echo_eval_menu
                 exit 0
                 ;;
             *) echo_info_menu
