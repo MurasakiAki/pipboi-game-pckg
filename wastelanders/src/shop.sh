@@ -3,7 +3,17 @@
 source shop_menus.sh
 
 function buy() {
-    echo
+    local itm_to_buy=$1
+
+    case "$itm_to_buy" in
+        W1) echo "w1" ;;
+        W2) echo "w2" ;;
+        W3) echo "w3" ;;
+        2) echo "2" ;;
+        3) echo "3" ;;
+        4) echo "4" ;;
+    esac
+
 }
 
 function shop() {
@@ -41,7 +51,7 @@ function shop() {
                 esac
                 echo_shop_menu
             ;;
-            4) 
+            4) buy
             ;;
             5) 
                 is_done=1 
