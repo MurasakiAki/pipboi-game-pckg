@@ -49,3 +49,12 @@ function check_item() {
         echo $item
     fi
 }
+
+function check_price() {
+    local caps=$1
+    local price=$2
+
+    if [ $caps -ge $price ]; then
+        
+    fi
+}

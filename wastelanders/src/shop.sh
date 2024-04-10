@@ -51,7 +51,7 @@ function shop() {
                 esac
                 echo_shop_menu
             ;;
-            4) buy
+            4) buy "$will_buy"
             ;;
             5) 
                 is_done=1 
