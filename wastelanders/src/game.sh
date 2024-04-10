@@ -9,6 +9,7 @@ source menus.sh
 source player_logic.sh
 source enemy_logic.sh
 source create_char.sh
+source shop_menus.sh
 source shop.sh
 
 RED='\033[0;31m'
