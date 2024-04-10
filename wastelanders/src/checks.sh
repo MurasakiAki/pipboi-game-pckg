@@ -55,6 +55,8 @@ function check_price() {
     local price=$2
 
     if [ $caps -ge $price ]; then
-        
+        echo 1
+    else 
+        echo 0
     fi
 }

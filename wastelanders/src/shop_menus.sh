@@ -23,6 +23,10 @@ SLOT1_PRC=0
 SLOT2_PRC=0
 SLOT3_PRC=0
 
+S1_IS_BOUGHT=0
+S2_IS_BOUGHT=0
+S3_IS_BOUGHT=0
+
 WPN1_PRC=0
 WPN2_PRC=0
 WPN3_PRC=0
@@ -118,6 +122,18 @@ function echo_shop_menu() {
             SLOT3_PRC=$SMB_PRC
         ;;
     esac
+
+    if [ $S1_IS_BOUGHT -eq 1 ];then
+        slot1_str="XXXX"
+    fi
+
+    if [ $S2_IS_BOUGHT -eq 1 ];then
+        slot2_str="XXXX"
+    fi
+
+    if [ $S3_IS_BOUGHT -eq 1 ];then
+        slot3_str="XXXX"
+    fi
 
     local slot1_prc=$(pad_with_zeros $SLOT1_PRC)
     local slot2_prc=$(pad_with_zeros $SLOT2_PRC)

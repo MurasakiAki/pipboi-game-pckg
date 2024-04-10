@@ -186,7 +186,9 @@ function start_game() {
                 DEFEATED_ENEMIES=$((DEFEATED_ENEMIES + 1))
                 LEVEL=$((DEFEATED_ENEMIES / 5 + 1))
                 LEVEL=$(check_lvl_stat "$LEVEL")
-                shop
+                if [ $(get_random_number 1 10) -eq 1 ]; then
+                    shop
+                fi
                 init_enemy
             else
                 player_turn
@@ -198,7 +200,9 @@ function start_game() {
                 DEFEATED_ENEMIES=$((DEFEATED_ENEMIES + 1))
                 LEVEL=$((DEFEATED_ENEMIES / 5 + 1))
                 LEVEL=$(check_lvl_stat "$LEVEL")
-                shop
+                if [ $(get_random_number 1 10) -eq 9 ]; then
+                    shop
+                fi
                 init_enemy
             else
                 enemy_turn
