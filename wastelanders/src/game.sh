@@ -119,33 +119,35 @@ function player_turn() {
 function enemy_turn() {
     ACTION_MSG="Enemy turn."
     echo_menu
+    if [ "$(enemy.is_on_fire)" -eq "1" ] && [ "$(enemy.fire_time)" -gt "0" ]; then
+        damage=$(calculate_percentage "$(weapon.quantity)" 10)
+        enemy_chealth=$(enemy.current_health)
+        enemy.current_health = $((enemy_chealth - damage))
+        f_time=$(enemy.fire_time)
+        enemy.fire_time = $((f_time - 1))
+        if [ "$(enemy.fire_time)" -eq "0" ]; then
+            enemy.is_on_fire = 0
+        fi
+    fi
+    
+    if [ "$(enemy.is_smoked)" -eq "1" ] && [ "$(enemy.smoke_time)" -gt "0" ]; then
+        enemy_max_stm=$(enemy.max_stamina)
+        stm_debuff=$((enemy_max_stm / 2))
+        enemy.current_stamina = "$stm_debuff"
+        s_time=$(enemy.smoke_time)
+        enemy.smoke_time = $((s_time - 1))
+        if [ "$(enemy.smoke_time)" -eq "0" ]; then
+            enemy.is_smoked = 0
+        fi
+    else
+        enemy.current_stamina = $(enemy.max_stamina)
+    fi
+
     enemy_chp=$(enemy.current_health)
     if [ "$enemy_chp" -gt "0" ]; then
         echo_enemy_turn
         enemy.is_defending = "0"
-        if [ "$(enemy.is_on_fire)" -eq "1" ] && [ "$(enemy.fire_time)" -gt "0" ]; then
-            damage=$(calculate_percentage "$(weapon.quantity)" 10)
-            enemy_chealth=$(enemy.current_health)
-            enemy.current_health = $((enemy_chealth - damage))
-            f_time=$(enemy.fire_time)
-            enemy.fire_time = $((f_time - 1))
-            if [ "$(enemy.fire_time)" -eq "0" ]; then
-                enemy.is_on_fire = 0
-            fi
-        fi
-        if [ "$(enemy.is_smoked)" -eq "1" ] && [ "$(enemy.smoke_time)" -gt "0" ]; then
-            enemy_max_stm=$(enemy.max_stamina)
-            stm_debuff=$((enemy_max_stm / 2))
-            enemy.current_stamina = "$stm_debuff"
-            s_time=$(enemy.smoke_time)
-            enemy.smoke_time = $((s_time - 1))
-            if [ "$(enemy.smoke_time)" -eq "0" ]; then
-                enemy.is_smoked = 0
-            fi
-        else
-            enemy.current_stamina = $(enemy.max_stamina)
-        fi
-
+        
         while [ "$(enemy.current_stamina)" -gt "0" ]; do
             action=$(decide_action)
             ACTION_MSG="Enemy is deciding."
@@ -157,11 +159,10 @@ function enemy_turn() {
             if [ "$action" == "pass" ]; then
                 break
             fi
-
+            
             if [ "$action" == "attack" ]; then
                 if [ "$(enemy.current_stamina)" -ge "$(enemy_weapon.stm_per_use)" ]; then
                     attack
-                    
                 fi
             elif [ "$action" == "defend" ]; then
                 if [ "$(enemy.is_defending)" -eq "0" ]; then
@@ -169,6 +170,11 @@ function enemy_turn() {
                 fi
             fi
             
+            if [ "$(player.current_health)" -eq "0" ]; then
+                echo_eval_menu
+                break
+            fi
+
         done
     fi
 }
@@ -200,7 +206,7 @@ function start_game() {
                 DEFEATED_ENEMIES=$((DEFEATED_ENEMIES + 1))
                 LEVEL=$((DEFEATED_ENEMIES / 5 + 1))
                 LEVEL=$(check_lvl_stat "$LEVEL")
-                if [ $(get_random_number 1 10) -eq 9 ]; then
+                if [ $(get_random_number 1 5) -eq 2 ]; then
                     shop
                 fi
                 init_enemy

@@ -240,5 +240,19 @@ function echo_eval_menu() {
         echo -e "|                                            |"
         echo -e "|                                            |"
         echo -e "\============================================/"
+    else
+        echo -e "/============================================\\"
+        echo -e "|                                            |"
+        echo -e "|            YOU HAVE FORTUNATELY            |"
+        echo -e "|                  RAN AWAY                  |"
+        echo -e "|                                            |"
+        echo -e "|                   SCORE:                   |"
+        echo -e "|                  $final_score                  |"
+        echo -e "|                                            |"
+        echo -e "|                                            |"
+        echo -e "|                                            |"
+        echo -e "|                                            |"
+        echo -e "|                                            |"
+        echo -e "\============================================/"
     fi
 }

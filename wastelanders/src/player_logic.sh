@@ -143,6 +143,8 @@ function do_run() {
     if [ "$mult" -le "$(player.AGI)" ]; then
         ACTION_MSG="Player ran away"
         RAN_AWAY=1
+        sleep 1
+        echo_eval_menu
     else
         ACTION_MSG="Player did not ran away"
     fi

@@ -68,6 +68,11 @@ function decide_action() {
         return
     fi
 
+    if [ "$(enemy.is_defending)" -eq "1" ]; then
+        echo "pass"
+        return
+    fi
+
     if [ $enemy_chp -le "$(calculate_percentage "$enemy_mhp" 10)" ]; then
         echo "defend"
         return
@@ -75,11 +80,6 @@ function decide_action() {
 
     if [ "$(enemy.current_stamina)" -ge "$(enemy_weapon.stm_per_use)" ]; then
         echo "attack"
-        return
-    fi
-
-    if [ "$(enemy.is_defending)" -eq "1" ]; then
-        echo "pass"
         return
     fi
 
