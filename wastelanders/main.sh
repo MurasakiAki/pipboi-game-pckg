@@ -1,123 +1,71 @@
 #!/bin/bash
 
-LOGGED_IN_USR=""
-
-hash_password() {
-    local password=$1
-    local salt=$(openssl rand -base64 12)
-    local hashed_password=$(echo -n "$password$salt" | openssl sha512 -binary | base64)
-    echo "$hashed_password"
-}
-
-check_password() {
-    local input_password=$1
-    local hashed_password=$2
-    local salt=${hashed_password:88}
-    local new_hash=$(echo -n "$input_password$salt" | openssl sha512 -binary | base64)
-    [[ "$hashed_password" == "$new_hash" ]]
-}
-
-check_user() {
-    local username=$1
-    [[ -f "users/.$username.ini" ]]
-}
-
+# Function to register a new user
 register() {
-    local username=$1
-    local password=$2
-    if check_user "$username"; then
-        echo "User already exists, please login"
-    else
-        touch "users/.$username.ini"
-        if { echo -e "[Data]\npassword = $(hash_password "$password")\nhi-score = 0"; } > "users/.$username.ini"; then
-            LOGGED_IN_USR=$username
-            echo "New player created."
-        fi
-    fi
+    read -p "Enter your username: " username
+    read -s -p "Enter your password: " password
+    echo ""
+    echo "$password" > "users/$username.ini"
+    echo "User registered successfully!"
 }
 
+# Function to login
 login() {
-    local username=$1
-    local password=$2
-    if check_user "$username"; then
-        read_pass=$(awk -F= '/password/ {print $2}' "users/.$username.ini")
-        if check_password "$password" "$read_pass"; then
-            echo "login successful"
-            return 0
-        else
-            echo "invalid password"
-            return 1
-        fi
+    read -p "Enter your username: " username
+    read -s -p "Enter your password: " password
+    echo ""
+    stored_password=$(< "users/$username.ini")
+    if [ "$password" = "$stored_password" ]; then
+        echo "Login successful!"
+        game_menu
+    else
+        echo "Invalid username or password."
     fi
 }
 
-while true; do
-    echo_welcome
-    while true; do
-        clear
-        read -p "Do you want to [L]ogin or [r]egister? " choice
-        case $choice in
-            [lL]*)
-                echo "Please log in:"
-                read -p "Username: " usrnm
-                read -s -p "Password: " psswd
-                echo
-                if login "$usrnm" "$psswd"; then
-                    LOGGED_IN_USR=$usrnm
-                    break 2
-                fi
+# Function for the game menu
+game_menu() {
+    echo "Welcome to the game!"
+    PS3="Please choose an option: "
+    options=("Play" "Options" "Exit")
+    select opt in "${options[@]}"
+    do
+        case $opt in
+            "Play")
+                echo "Starting the game..."
+                # Add your game logic here
                 ;;
-            [rR]*)
-                echo "Please register:"
-                read -p "Username: " usrnm
-                read -s -p "Password: " psswd
-                echo
-                register "$usrnm" "$psswd"
-                login "$usrnm" "$psswd"
-                break 2
+            "Options")
+                echo "Options menu..."
+                # Add your options logic here
                 ;;
-            *)
-                echo "Wrong choice"
+            "Exit")
+                echo "Goodbye!"
+                exit 0
                 ;;
+            *) echo "Invalid option";;
         esac
     done
-done
+}
 
-sleep 2
+# Main script starts here
+
+# Create users folder if it doesn't exist
+mkdir -p users
+
+echo "Welcome to the user login/register system!"
 
 while true; do
-    clear
-    cat <<EOF
-=======================
-|                     |
-|1) PLAY              |
-|2) OPTIONS           |
-|3) QUIT              |
-|                     |
-=======================
-EOF
-    read -p "What do you want to do? " go_to
-    case $go_to in
-        1)
-            clear
-            cd src
-            bash game.sh
+    read -p "Do you want to (R)egister or (L)ogin? " choice
+    case $choice in
+        [Rr]* )
+            register
             ;;
-        2)
-            echo "there should be options"
+        [Ll]* )
+            login
             ;;
-        3)
-            clear
-            cat <<EOF
-=======================
-|                     |
-|                     |
-|       Bye bye       |
-|                     |
-|                     |
-=======================
-EOF
-            break
+        * )
+            echo "Please enter 'R' for register or 'L' for login."
             ;;
     esac
 done
