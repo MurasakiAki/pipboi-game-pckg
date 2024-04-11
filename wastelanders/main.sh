@@ -32,8 +32,10 @@ game_menu() {
     do
         case $opt in
             "Play")
-                echo "Starting the game..."
-                # Add your game logic here
+                echo "Starting Wastelanders.."
+                sleep 1
+                bash src/game.sh
+                
                 ;;
             "Options")
                 echo "Options menu..."
