@@ -12,8 +12,8 @@ function init_enemy() {
     local enemy_dex=$(enemy.DEX)
 
     # Calculate enemy health and stamina based on STR and DEX
-    local enemy_health=$(( enemy_str * $(get_random_number 5 10) ))
-    local enemy_stamina=$(( enemy_dex * $(get_random_number 5 10) ))
+    local enemy_health=$(( enemy_str * $(get_random_number 2 5) ))
+    local enemy_stamina=$(( enemy_dex * $(get_random_number 2 5) ))
 
     # Initialize enemy with random name, health, and stamina
     local enemy_name=$(get_random_name)
