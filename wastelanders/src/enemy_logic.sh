@@ -4,10 +4,10 @@ source maths.sh
 
 function init_enemy() {
     # Assigning random values to enemy attributes
-    enemy.STR = $(( $(get_random_number 1 5) * LEVEL ))
-    enemy.PER = $(( $(get_random_number 1 5) * LEVEL ))
-    enemy.DEX = $(( $(get_random_number 1 5) * LEVEL ))
-    enemy.AGI = $(( $(get_random_number 1 5) * LEVEL ))
+    enemy.STR = $(( $(get_random_number 1 4) + LEVEL ))
+    enemy.PER = $(( $(get_random_number 1 4) + LEVEL ))
+    enemy.DEX = $(( $(get_random_number 1 4) + LEVEL ))
+    enemy.AGI = $(( $(get_random_number 1 4) + LEVEL ))
     local enemy_str=$(enemy.STR)
     local enemy_dex=$(enemy.DEX)
 
