@@ -195,6 +195,7 @@ function start_game() {
                 if [ $(get_random_number 1 10) -eq 1 ]; then
                     shop
                 fi
+                update_stats
                 init_enemy
             else
                 player_turn
@@ -209,6 +210,7 @@ function start_game() {
                 if [ $(get_random_number 1 5) -eq 2 ]; then
                     shop
                 fi
+                update_stats
                 init_enemy
             else
                 enemy_turn

@@ -14,8 +14,8 @@ function player_init() {
         HUMAN)
             hp=100
             stm=10
-            hp=$(( hp + ($(get_random_number 1 4) * str)))
-            stm=$(( stm + ($(get_random_number 1 4) * dex)))
+            hp=$(( hp + ($(get_random_number 1 2) * str)))
+            stm=$(( stm + ($(get_random_number 1 2) * dex)))
         ;;
         MLOK)
             hp=80
@@ -60,6 +60,46 @@ function player_init() {
         smoke_bomb.quantity = 5
         molotov.quantity = 5
     fi
+}
+
+function update_stats() {
+    str=$(player.STR)
+    per=$(player.PER)
+    dex=$(player.DEX)
+    agi=$(player.AGI)
+
+    og_str=$str
+    og_dex=$dex
+    
+    stat_to_inc=$(get_random_number 1 4)
+    if [ $stat_to_inc -eq 1 ]; then
+        str=$((str + 1))
+    elif [ $stat_to_inc -eq 2 ]; then
+        per=$((per + 1))
+    elif [ $stat_to_inc -eq 3 ]; then
+        dex=$((dex + 1))
+    elif [ $stat_to_inc -eq 4 ]; then
+        agi=$((agi + 1))
+    fi
+
+    player.STR = $str
+    player.PER = $per
+    player.DEX = $dex
+    player.AGI = $agi
+
+    hp=$(player.max_health)
+    stm=$(player.max_stamina)
+    str=$(player.STR)
+    dex=$(player.DEX)
+
+    if [ $og_str -ne $str ]; then
+        hp=$(( hp + ($(get_random_number 1 2) * str)))
+    elif [ $og_dex -ne $dex ]; then
+        stm=$(( stm + ($(get_random_number 1 2) * dex)))
+    fi
+
+    player.max_health = $hp
+    player.max_stamina = $stm
 }
 
 function do_attack() {

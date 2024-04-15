@@ -3,7 +3,6 @@
 source maths.sh
 
 function init_enemy() {
-    # Assigning random values to enemy attributes
     enemy.STR = $(( $(get_random_number 1 4) + LEVEL ))
     enemy.PER = $(( $(get_random_number 1 4) + LEVEL ))
     enemy.DEX = $(( $(get_random_number 1 4) + LEVEL ))
@@ -11,18 +10,14 @@ function init_enemy() {
     local enemy_str=$(enemy.STR)
     local enemy_dex=$(enemy.DEX)
 
-    # Calculate enemy health and stamina based on STR and DEX
     local enemy_health=$(( enemy_str * $(get_random_number 2 5) ))
     local enemy_stamina=$(( enemy_dex * $(get_random_number 2 5) ))
 
-    # Initialize enemy with random name, health, and stamina
     local enemy_name=$(get_random_name)
     enemy.init "$enemy_name" $enemy_health $enemy_stamina
 
-    # Calculate weapon stamina cost based on DEX
     local weapon_stamina_cost=$(( enemy_dex > 0 ? enemy_stamina / enemy_dex : enemy_stamina ))
     
-    # Ensure weapon stamina cost is non-negative and influenced by DEX
     if [ "$weapon_stamina_cost" -lt "0" ]; then
         weapon_stamina_cost=$(( -1 * weapon_stamina_cost ))
     elif [ "$weapon_stamina_cost" -eq "0" ]; then
@@ -30,21 +25,18 @@ function init_enemy() {
         enemy_stamina=$enemy_dex
     fi
 
-    # Initialize enemy weapon attributes
     local weapon_damage=$(( $(get_random_number 1 10) * LEVEL - enemy_dex))
     if [ "$weapon_damage" -le "0" ]; then
         weapon_damage=1
     fi
     enemy_weapon.init "Attack" $weapon_stamina_cost $weapon_damage
 
-    # Additional enemy properties
     enemy.is_defending = 0
     enemy.is_on_fire = 0
     enemy.fire_time = 0
     enemy.is_smoked = 0
     enemy.smoke_time = 0
     
-    # Ensure non-negative health and stamina
     if [ "$(enemy.current_health)" -lt "0" ]; then
         enemy_health=$(( -1 * enemy.current_health ))
         enemy.max_health = $enemy_health
