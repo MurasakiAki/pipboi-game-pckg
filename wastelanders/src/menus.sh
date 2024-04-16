@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source checks.sh
+source update_score.sh
 
 RED='\033[0;31m'
 BRED='\033[1;31m'
@@ -255,4 +256,7 @@ function echo_eval_menu() {
         echo -e "|                                            |"
         echo -e "\============================================/"
     fi
+
+    do_score_update "../../scores.json" $(player.name) $SCORE
+
 }

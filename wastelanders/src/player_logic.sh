@@ -44,7 +44,7 @@ function player_init() {
         ;;
     esac
 
-    player.init "aki" $hp $stm
+    player.init $PLAYER_NAME $hp $stm
     player.STR = $str
     player.PER = $per
     player.DEX = $dex

@@ -1,0 +1,5 @@
+Wastelanders
+
+A RPG roguelite game based on DnD/Fallout/Pokemon games.
+
+Docs and more about this game on https://github.com/MurasakiAki/pipboi-game-pckg
