@@ -1,7 +1,7 @@
 #!/bin/bash
 
-source weapons.sh
-source menus.sh
+source $SRC_PATH/weapons.sh
+source $SRC_PATH/menus.sh
 
 RED='\033[0;31m'
 BRED='\033[1;31m'

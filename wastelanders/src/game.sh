@@ -1,16 +1,16 @@
 #!/bin/bash
 
-. character.h
-. item.h
+. $SRC_PATH/character.h
+. $SRC_PATH/item.h
 
-source checks.sh
-source maths.sh
-source menus.sh
-source player_logic.sh
-source enemy_logic.sh
-source create_char.sh
-source shop_menus.sh
-source shop.sh
+source $SRC_PATH/checks.sh
+source $SRC_PATH/maths.sh
+source $SRC_PATH/menus.sh
+source $SRC_PATH/player_logic.sh
+source $SRC_PATH/enemy_logic.sh
+source $SRC_PATH/create_char.sh
+source $SRC_PATH/shop_menus.sh
+source $SRC_PATH/shop.sh
 
 RED='\033[0;31m'
 BRED='\033[1;31m'
@@ -24,18 +24,18 @@ GRAY='\033[1;30m'
 CYAN='\033[0;36m'
 NONE='\033[0m'
 
-PLAYER_NAME=$1
+export PLAYER_NAME=$1
 
-LEVEL=1
-TURN=1
-WHOSE_TURN=""
-SCORE=0
-RAN_AWAY=0
-DEFEATED_ENEMIES=0
-ACTION_MSG="Enemy is waiting."
-RACE=""
-CLASS=""
-STRT_WPN=0
+export LEVEL=1
+export TURN=1
+export WHOSE_TURN=""
+export SCORE=0
+export RAN_AWAY=0
+export DEFEATED_ENEMIES=0
+export ACTION_MSG="Enemy is waiting."
+export RACE=""
+export CLASS=""
+export STRT_WPN=0
 
 item syringe
 syringe.init "Syringe" 5 3

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source maths.sh
+source $SRC_PATH/maths.sh
 
 function init_enemy() {
     enemy.STR = $(( $(get_random_number 1 4) + LEVEL ))

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-source checks.sh
-source shop_menus.sh
+source $SRC_PATH/checks.sh
+source $SRC_PATH/shop_menus.sh
 
 function buy() {
     local itm_to_buy=$1

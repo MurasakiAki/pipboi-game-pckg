@@ -1,7 +1,7 @@
 #!/bin/bash
 
-source checks.sh
-source update_score.sh
+source $SRC_PATH/checks.sh
+source $SRC_PATH/update_score.sh
 
 RED='\033[0;31m'
 BRED='\033[1;31m'
@@ -257,6 +257,6 @@ function echo_eval_menu() {
         echo -e "\============================================/"
     fi
 
-    do_score_update "../../scores.json" $(player.name) $SCORE
+    do_score_update "$SRC_PATH/../../scores.json" $(player.name) $((SCORE))
 
 }

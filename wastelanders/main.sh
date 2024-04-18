@@ -2,4 +2,6 @@
 
 PLAYER_NAME=$1
 
-bash src/game.sh "$PLAYER_NAME"
+export SRC_PATH="$(dirname "$0")/src"
+
+bash $SRC_PATH/game.sh "$PLAYER_NAME"

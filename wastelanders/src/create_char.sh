@@ -1,7 +1,7 @@
 #!/bin/bash
 
-source create_char_menus.sh
-source weapons.sh
+source $SRC_PATH/create_char_menus.sh
+source $SRC_PATH/weapons.sh
 
 function create_character() {
     echo_welcome

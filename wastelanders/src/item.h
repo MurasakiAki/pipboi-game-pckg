@@ -1,3 +1,3 @@
 item(){
-    . <(sed "s/item/$1/g" item.class)
+    . <(sed "s/item/$1/g" "$SRC_PATH/item.class")
 }

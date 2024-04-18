@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source maths.sh
+source $SRC_PATH/maths.sh
 
 function player_init() {
     local hp=100

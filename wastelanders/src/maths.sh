@@ -25,7 +25,7 @@ function get_random_number() {
 }
 
 function get_random_name() {
-    local enemy_name_file="../enemies/names.txt"
+    local enemy_name_file="$SRC_PATH/../enemies/names.txt"
     if [ -f "$enemy_name_file" ]; then
         local random_name=$(shuf -n 1 "$enemy_name_file" | cut -d "|" -f 1)
         echo "$random_name"
@@ -36,7 +36,7 @@ function get_random_name() {
 }
 
 function get_description() {
-    local enemy_name_file="../enemies/names.txt"
+    local enemy_name_file="$SRC_PATH/../enemies/names.txt"
     if [ -f "$enemy_name_file" ]; then
         local description=$(grep "^$1" "$enemy_name_file" | cut -d "|" -f 2- | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')
         echo "$description"
@@ -47,7 +47,7 @@ function get_description() {
 }
 
 function get_random_wpn_name() {
-    local wpn_name_file="../weapons/names.txt"
+    local wpn_name_file="$SRC_PATH/../weapons/names.txt"
     if [ -f "$wpn_name_file" ]; then
         local random_name=$(shuf -n 1 "$wpn_name_file" | cut -d "|" -f 1)
         echo "$random_name"
@@ -58,7 +58,7 @@ function get_random_wpn_name() {
 }
 
 function get_wpn_description() {
-    local wpn_name_file="../weapons/names.txt"
+    local wpn_name_file="$SRC_PATH/../weapons/names.txt"
     if [ -f "$wpn_name_file" ]; then
         local description=$(grep "^$1" "$wpn_name_file" | cut -d "|" -f 2- | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')
         echo "$description"
